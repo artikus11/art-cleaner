@@ -1,0 +1,21 @@
+{
+  "name": "art/cleaner",
+  "description": "Plugin.",
+  "license": "GPL-2.0",
+  "keywords": [
+    "art"
+  ],
+  "homepage": "https://github.com/artikus11/art-cleaner",
+  "authors": [
+    {
+      "name": "Artem Abramovich",
+      "homepage": "https://wpruse.ru"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "classmap": [
+      "classes"
+    ]
+  }
+}
