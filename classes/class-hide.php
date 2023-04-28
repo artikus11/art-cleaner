@@ -168,6 +168,7 @@ class Hide {
 		unset( $dash_normal['wp_mail_smtp_reports_widget_lite'] );
 		unset( $dash_normal['yith_dashboard_products_news'] );
 		unset( $dash_normal['yith_dashboard_blog_news'] );
+		unset( $dash_normal['wcfm_dashboard_status'] );
 
 	}
 
