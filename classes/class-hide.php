@@ -27,7 +27,7 @@ class Hide {
 		add_filter( 'update_footer', '__return_empty_string', 11 );
 		add_filter( 'pre_site_transient_php_check_' . md5( PHP_VERSION ), '__return_empty_array' );
 
-		add_action('admin_bar_menu', [ $this, 'admin_bar' ], 9999);
+		add_action( 'admin_bar_menu', [ $this, 'admin_bar' ], 9999 );
 
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			add_action( 'init', [ $this, 'remove_front_admin_bar' ] );
@@ -96,26 +96,26 @@ class Hide {
 	 *
 	 * @return void
 	 */
-	public function admin_bar($wp_admin_bar) {
+	public function admin_bar( $wp_admin_bar ) {
 
 		//$wp_admin_bar->remove_node('edit');
 		//$wp_admin_bar->remove_node('customize');
-		$wp_admin_bar->remove_node('wp-logo');
-		$wp_admin_bar->remove_node('comments');
-		$wp_admin_bar->remove_node('new-content');
-		$wp_admin_bar->remove_node('litespeed-menu');
-		$wp_admin_bar->remove_node('theme-dashboard');
-		$wp_admin_bar->remove_node('new_draft');
-		$wp_admin_bar->remove_node('updates');
-		$wp_admin_bar->remove_node('flatsome_panel');
-		$wp_admin_bar->remove_node('rank-math');
-		$wp_admin_bar->remove_node('bapf_debug_bar');
-		$wp_admin_bar->remove_node('btn-wcabe-admin-bar');
-		$wp_admin_bar->remove_node('wpvivid_admin_menu');
-		$wp_admin_bar->remove_node('wp-mail-smtp-menu');
-		$wp_admin_bar->remove_node('aioseo-main');
-		$wp_admin_bar->remove_node('wpdiscuz');
-		$wp_admin_bar->remove_node('duplicate-post');
+		$wp_admin_bar->remove_node( 'wp-logo' );
+		$wp_admin_bar->remove_node( 'comments' );
+		$wp_admin_bar->remove_node( 'new-content' );
+		$wp_admin_bar->remove_node( 'litespeed-menu' );
+		$wp_admin_bar->remove_node( 'theme-dashboard' );
+		$wp_admin_bar->remove_node( 'new_draft' );
+		$wp_admin_bar->remove_node( 'updates' );
+		$wp_admin_bar->remove_node( 'flatsome_panel' );
+		$wp_admin_bar->remove_node( 'rank-math' );
+		$wp_admin_bar->remove_node( 'bapf_debug_bar' );
+		$wp_admin_bar->remove_node( 'btn-wcabe-admin-bar' );
+		$wp_admin_bar->remove_node( 'wpvivid_admin_menu' );
+		$wp_admin_bar->remove_node( 'wp-mail-smtp-menu' );
+		$wp_admin_bar->remove_node( 'aioseo-main' );
+		$wp_admin_bar->remove_node( 'wpdiscuz' );
+		$wp_admin_bar->remove_node( 'duplicate-post' );
 	}
 
 
@@ -131,43 +131,34 @@ class Hide {
 		$dash_normal_high = &$GLOBALS['wp_meta_boxes']['dashboard']['normal']['high'];
 
 		// Быстрая публикация
-		unset( $dash_side['dashboard_quick_press'] );
-		// Последние черновики
-		unset( $dash_side['dashboard_recent_drafts'] );
-		// Новости и мероприятия WordPress
-		unset( $dash_side['dashboard_primary'] );
-		// Другие Новости WordPress
-		unset( $dash_side['dashboard_secondary'] );
-		// Входящие ссылки
-		unset( $dash_normal['dashboard_incoming_links'] );
-		// Прямо сейчас
-		unset( $dash_normal['dashboard_right_now'] );
-		// Последние комментарии
-		unset( $dash_normal['dashboard_recent_comments'] );
-		unset( $dash_normal['dashboard_plugins'] );
-		// Виджет здоровья
-		unset( $dash_normal['dashboard_site_health'] );
-		// Активность
-		unset( $dash_normal['dashboard_activity'] );
-
-		unset( $dash_normal['woo_vl_news_widget'] );
-		unset( $dash_normal['woo_st-dashboard_right_now'] );
-		unset( $dash_normal['woo_st-dashboard_sales'] );
-
-		// Виджет OceanWP
-		unset( $dash_normal['owp_dashboard_news'] );
-		// Виджет WooCommerce
-		unset( $dash_normal['woocommerce_dashboard_status'] );
-		// Виджет WooCommerce
-		unset( $dash_normal['woocommerce_dashboard_recent_reviews'] );
-		// Виджет Page Builder от SiteOrigin
-		unset( $dash_normal['so-dashboard-news'] );
-		// Виджет Rank Math SEO
-		unset( $dash_normal_high['rank_math_dashboard_widget'] );
-		// Виджет wp_mail_smtp
-		unset( $dash_normal['wp_mail_smtp_reports_widget_lite'] );
-		unset( $dash_normal['yith_dashboard_products_news'] );
-		unset( $dash_normal['yith_dashboard_blog_news'] );
+		unset(
+			$dash_side['dashboard_quick_press'],
+			$dash_side['dashboard_recent_drafts'],
+			$dash_side['dashboard_primary'],
+			$dash_side['dashboard_secondary'],
+			$dash_normal['dashboard_incoming_links'],
+			$dash_normal['dashboard_right_now'],
+			$dash_normal['dashboard_recent_comments'],
+			$dash_normal['dashboard_plugins'],
+			$dash_normal['dashboard_site_health'],
+			$dash_normal['dashboard_activity'],
+			$dash_normal['woo_vl_news_widget'],
+			$dash_normal['woo_st-dashboard_right_now'],
+			$dash_normal['woo_st-dashboard_sales'],
+			$dash_normal['woocommerce_dashboard_status'],
+			$dash_normal['woocommerce_dashboard_recent_reviews'],
+			$dash_normal['owp_dashboard_news'],
+			$dash_normal['so-dashboard-news'],
+			$dash_normal['wp_mail_smtp_reports_widget_lite'],
+			$dash_normal['yith_dashboard_products_news'],
+			$dash_normal['yith_dashboard_blog_news'],
+			$dash_normal['wpseo-dashboard-overview'],
+			$dash_normal_high['rank_math_dashboard_widget'],
+			$dash_normal_high['dashboard_rediscache'],
+			$dash_normal_high['aioseo-seo-setup'],
+			$dash_normal['aioseo-overview'],
+			$dash_normal['aioseo-rss-feed'],
+		);
 
 	}
 

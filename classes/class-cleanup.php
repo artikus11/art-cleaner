@@ -11,12 +11,8 @@ namespace Art\Cleaner;
 
 class Cleanup {
 
-	/*public function __construct() {
 
-		add_action( 'after_setup_theme', [ $this, 'start_cleanup' ] );
-		add_action( 'init', [ $this, 'cleanup_head' ] );
-	}*/
-	public function init_hooks() {
+	public function init_hooks(): void {
 		$this->cleanup_head();
 		$this->start_cleanup();
 	}
