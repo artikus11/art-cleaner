@@ -158,6 +158,7 @@ class Hide {
 			$dash_normal_high['aioseo-seo-setup'],
 			$dash_normal['aioseo-overview'],
 			$dash_normal['aioseo-rss-feed'],
+			$dash_normal['wcfm_dashboard_status']
 		);
 
 	}
