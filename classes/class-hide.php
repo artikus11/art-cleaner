@@ -27,7 +27,8 @@ class Hide {
 		add_filter( 'update_footer', '__return_empty_string', 11 );
 		add_filter( 'pre_site_transient_php_check_' . md5( PHP_VERSION ), '__return_empty_array' );
 
-		add_action( 'admin_bar_menu', [ $this, 'admin_bar' ], 9999 );
+		add_action( 'admin_bar_menu', [ $this, 'admin_bar' ], PHP_INT_MAX );
+		add_action( 'wp_before_admin_bar_render', [ $this, 'before_admin_bar' ], PHP_INT_MAX );
 
 		if ( ! current_user_can( 'edit_posts' ) ) {
 			add_action( 'init', [ $this, 'remove_front_admin_bar' ] );
@@ -94,9 +95,11 @@ class Hide {
 	/**
 	 * Изменяет базовый набор элементов (ссылок) в тулбаре.
 	 *
+	 * @param $wp_admin_bar
+	 *
 	 * @return void
 	 */
-	public function admin_bar( $wp_admin_bar ) {
+	public function admin_bar( $wp_admin_bar ): void {
 
 		//$wp_admin_bar->remove_node('edit');
 		//$wp_admin_bar->remove_node('customize');
@@ -116,6 +119,23 @@ class Hide {
 		$wp_admin_bar->remove_node( 'aioseo-main' );
 		$wp_admin_bar->remove_node( 'wpdiscuz' );
 		$wp_admin_bar->remove_node( 'duplicate-post' );
+		$wp_admin_bar->remove_node( 'updraft_admin_node' );
+
+	}
+
+
+	/**
+	 * Изменяет базовый набор элементов (ссылок) в тулбаре.
+	 *
+	 * @return void
+	 */
+	public function before_admin_bar(): void {
+
+		$wp_admin_bar = $GLOBALS['wp_admin_bar'];
+
+		$wp_admin_bar->remove_node( 'updraft_admin_node' );
+		$wp_admin_bar->remove_node( 'wp-optimize-node' );
+
 	}
 
 
