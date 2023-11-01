@@ -18,6 +18,8 @@ class Main {
 
 		if ( class_exists( 'Woocommerce' ) && ! defined( 'WP_CLI' ) ) {
 			( new Woocommerce_Disabled() )->init_hooks();
+
+			( new Woocommerce_Cleanup() )->init_hooks();
 		}
 
 	}
