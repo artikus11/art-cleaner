@@ -13,6 +13,10 @@ class Woocommerce_Cleanup {
 		}
 
 		add_filter( 'woocommerce_debug_tools', [ $this, 'add_tools' ] );
+
+		add_filter( 'action_scheduler_retention_period', [ $this, 'retention_period' ], 100 );
+		add_filter( 'action_scheduler_default_cleaner_statuses', [ $this, 'default_cleaner_statuses' ], 100 );
+		add_filter( 'action_scheduler_cleanup_batch_size', [ $this, 'cleanup_batch_size' ], 100 );
 	}
 
 
@@ -54,6 +58,26 @@ class Woocommerce_Cleanup {
 
 		global $wpdb;
 		$wpdb->query( "TRUNCATE `{$wpdb->prefix}actionscheduler_logs`" );
+	}
+
+
+	public function retention_period( $period ) {
+
+		return 7 * DAY_IN_SECONDS;
+	}
+
+
+	public function default_cleaner_statuses( $statuses ) {
+
+		$statuses[] = 'failed';
+
+		return $statuses;
+	}
+
+
+	public function cleanup_batch_size( $batch_size ): int {
+
+		return 100;
 	}
 
 }
