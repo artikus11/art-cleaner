@@ -60,9 +60,29 @@ class Woocommerce_Cleanup {
 	}
 
 
+	public function clear_scheduler_actions(): string {
+
+		global $wpdb;
+
+		$result = absint(
+			$wpdb->query(
+				"DELETE 
+							FROM {$wpdb->prefix}actionscheduler_actions
+							WHERE `status` 
+						        IN ( 'canceled', 'failed', 'complete' )"
+			)
+		);
+
+		wp_cache_flush();
+
+		return sprintf( 'Успешно удалено %d задач.', absint( $result ) );
+	}
+
+
 	public function clear_scheduler_actions_logs(): string {
 
 		global $wpdb;
+
 		$wpdb->query( "TRUNCATE `{$wpdb->prefix}actionscheduler_logs`" );
 
 		return 'Журнал задач успешно очищен.';
