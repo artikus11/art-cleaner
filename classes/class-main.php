@@ -12,6 +12,16 @@ class Main {
 
 	public function init_hooks(): void {
 
+		add_action( 'before_woocommerce_init', static function() {
+			if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
+					'custom_order_tables',
+					ACL_PLUGIN_FILE,
+					true
+				);
+			}
+		} );
+
 		( new Disable_Aggressive_Updates() )->init_hooks();
 		( new Hide() )->init_hooks();
 		( new Cleanup() )->init_hooks();
