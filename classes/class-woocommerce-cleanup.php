@@ -36,27 +36,37 @@ class Woocommerce_Cleanup {
 			'callback' => [ $this, 'clear_scheduler_actions_logs' ],
 		];
 
+		$tools['clear_order_notes'] = [
+			'name'     => 'Очистить уведомления в заказе',
+			'desc'     => 'Очищает комментарии заказов в статусе Выполнено и Отменено',
+			'button'   => 'Очистить',
+			'callback' => [ $this, 'clear_order_notes' ],
+		];
+
 		return $tools;
 	}
 
 
-	public function clear_scheduler_actions(): string {
+	public function clear_order_notes(): string {
 
 		global $wpdb;
+
 		$result = absint(
 			$wpdb->query(
-				"
-			DELETE 
-			FROM {$wpdb->prefix}actionscheduler_actions
-			 WHERE `status` 
-			 IN ( 'canceled', 'failed', 'complete' )
-		 "
+				"DELETE
+						    p
+						    FROM
+						        {$wpdb->prefix}comments p
+						            JOIN {$wpdb->prefix}posts pm on p.comment_post_ID = pm.ID
+						    WHERE
+					            comment_type = 'order_note' AND
+					            post_status IN ( 'wc-completed', 'wc-cancelled' );"
 			)
 		);
 
 		wp_cache_flush();
 
-		return sprintf( 'Успешно удалено %d задач.', absint( $result ) );
+		return sprintf( 'Успешно удалено %d сообщений.', absint( $result ) );
 	}
 
 
