@@ -6,13 +6,16 @@ class Main {
 
 	public function __construct() {
 
+		$this->updater_init();
+
 		add_action( 'after_setup_theme', [ $this, 'init_hooks' ] );
 	}
 
 
 	public function init_hooks(): void {
 
-		add_action( 'before_woocommerce_init', static function() {
+		add_action( 'before_woocommerce_init', static function () {
+
 			if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
 				\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility(
 					'custom_order_tables',
@@ -32,6 +35,16 @@ class Main {
 			( new Woocommerce_Cleanup() )->init_hooks();
 		}
 
+	}
+
+
+	private function updater_init(): void {
+
+		$updater = new Updater( ACL_PLUGIN_AFILE );
+		$updater->set_repository( 'art-cleaner' );
+		$updater->set_username( 'artikus11' );
+		$updater->set_authorize( 'Z2hwX3FmOHVsOXJVV2pSaVFUVjd3MXVybkpVbWNVT3VCbzBNV0ZCWA==' );
+		$updater->init();
 	}
 
 }
