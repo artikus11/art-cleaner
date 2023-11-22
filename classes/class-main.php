@@ -88,7 +88,7 @@ class Main {
 		$updater = new Updater( ACL_PLUGIN_AFILE );
 		$updater->set_repository( 'art-cleaner' );
 		$updater->set_username( 'artikus11' );
-		$updater->set_authorize( 'Z2hwX3BaWlVBSW43NU9wczl1Tk5MVkdJVUFnYUVlblNEUzBqQWh0UQ==' );
+		//$updater->set_authorize( 'Z2hwX3BaWlVBSW43NU9wczl1Tk5MVkdJVUFnYUVlblNEUzBqQWh0UQ==' );
 		$updater->init();
 	}
 
