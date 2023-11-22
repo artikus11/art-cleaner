@@ -135,7 +135,7 @@ class CLI {
 	 *
 	 * ## EXAMPLES
 	 *
-	 *     $ wp acl flush-scheduled-logs
+	 *     $ wp acl flush-order-notes
 	 *     Success: Flush Completed.
 	 *
 	 *

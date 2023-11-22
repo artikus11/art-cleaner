@@ -76,8 +76,7 @@ class Woocommerce_Cleanup {
 
 		$result = absint(
 			$wpdb->query(
-				"SELECT
-                            COUNT(*)
+				"SELECT *
 						    FROM
 						        {$wpdb->prefix}comments p
 						            JOIN {$wpdb->prefix}posts pm on p.comment_post_ID = pm.ID
@@ -142,13 +141,15 @@ class Woocommerce_Cleanup {
 	public function select_scheduler_actions_logs(): string {
 
 		global $wpdb;
-		$result = $wpdb->query(
-			"SELECT
-		                        COUNT(*) 
-                                FROM `{$wpdb->prefix}actionscheduler_logs`"
+
+		$result = absint(
+			$wpdb->query(
+				"SELECT *
+	                    FROM `{$wpdb->prefix}actionscheduler_logs`"
+			)
 		);
 
-		return sprintf( 'Получено %d журналов.', $result );
+		return sprintf( 'Получено %d журналов.', absint( $result )  );
 	}
 
 
