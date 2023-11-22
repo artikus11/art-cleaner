@@ -70,6 +70,29 @@ class Woocommerce_Cleanup {
 	}
 
 
+	public function select_order_notes(): string {
+
+		global $wpdb;
+
+		$result = absint(
+			$wpdb->query(
+				"SELECT
+                            COUNT(*)
+						    FROM
+						        {$wpdb->prefix}comments p
+						            JOIN {$wpdb->prefix}posts pm on p.comment_post_ID = pm.ID
+						    WHERE
+					            comment_type = 'order_note' AND
+					            post_status IN ( 'wc-completed', 'wc-cancelled' );"
+			)
+		);
+
+		wp_cache_flush();
+
+		return sprintf( 'Получено %d сообщений.', absint( $result ) );
+	}
+
+
 	public function clear_scheduler_actions(): string {
 
 		global $wpdb;
@@ -89,6 +112,23 @@ class Woocommerce_Cleanup {
 	}
 
 
+	public function select_scheduler_actions(): string {
+
+		global $wpdb;
+
+		$result =
+			$wpdb->query(
+				"SELECT *
+							FROM {$wpdb->prefix}actionscheduler_actions
+							WHERE `status` 
+						        IN ( 'canceled', 'failed', 'complete' )"
+
+			);
+
+		return sprintf( 'Успешно получено %d задач.', $result );
+	}
+
+
 	public function clear_scheduler_actions_logs(): string {
 
 		global $wpdb;
@@ -99,9 +139,22 @@ class Woocommerce_Cleanup {
 	}
 
 
+	public function select_scheduler_actions_logs(): string {
+
+		global $wpdb;
+		$result = $wpdb->query(
+			"SELECT
+		                        COUNT(*) 
+                                FROM `{$wpdb->prefix}actionscheduler_logs`"
+		);
+
+		return sprintf( 'Получено %d журналов.', $result );
+	}
+
+
 	public function retention_period( $period ) {
 
-		return 7 * DAY_IN_SECONDS;
+		return DAY_IN_SECONDS;
 	}
 
 
