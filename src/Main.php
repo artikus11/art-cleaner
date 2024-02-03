@@ -2,6 +2,8 @@
 
 namespace Art\Cleaner;
 
+use Art\Cleaner\Woocommerce\Disabled;
+use Art\Cleaner\Woocommerce\Tools;
 use Exception;
 use WP_CLI;
 
@@ -13,16 +15,21 @@ class Main {
 	protected CLI $cli;
 
 	/**
-	 * @var \Art\Cleaner\Woocommerce_Cleanup
+	 * @var \Art\Cleaner\Woocommerce\Tools
 	 */
-	protected Woocommerce_Cleanup $flushing;
+	protected Tools $flushing;
+	/**
+	 * @var \Art\Cleaner\Updater
+	 */
+	protected Updater $updater;
 
 
 	public function __construct() {
 
-		$this->flushing = new Woocommerce_Cleanup();
+		$this->flushing = new Tools();
+		$this->updater  = new Updater( ACL_PLUGIN_AFILE );
 
-		$this->updater_init();
+		$this->updater_init( $this->updater );
 		$this->init_cli();
 
 		add_action( 'after_setup_theme', [ $this, 'init_hooks' ] );
@@ -42,12 +49,12 @@ class Main {
 			}
 		} );
 
-		( new Disable_Aggressive_Updates() )->init_hooks();
+		( new DisableAggressiveUpdates() )->init_hooks();
 		( new Hide() )->init_hooks();
-		( new Cleanup() )->init_hooks();
+		( new CleanupHead() )->init_hooks();
 
 		if ( class_exists( 'Woocommerce' ) && ! $this->is_cli() ) {
-			( new Woocommerce_Disabled() )->init_hooks();
+			( new Disabled() )->init_hooks();
 
 			$this->flushing->init_hooks();
 		}
@@ -77,9 +84,8 @@ class Main {
 	}
 
 
-	private function updater_init(): void {
+	private function updater_init( $updater ): void {
 
-		$updater = new Updater( ACL_PLUGIN_AFILE );
 		$updater->set_repository( 'art-cleaner' );
 		$updater->set_username( 'artikus11' );
 

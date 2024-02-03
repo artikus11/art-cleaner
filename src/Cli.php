@@ -2,6 +2,7 @@
 
 namespace Art\Cleaner;
 
+use Art\Cleaner\Woocommerce\Tools;
 use cli\progress\Bar;
 use WP_CLI;
 use WP_CLI\NoOp;
@@ -10,7 +11,7 @@ use function WP_CLI\Utils\make_progress_bar;
 
 class CLI {
 
-	protected Woocommerce_Cleanup $cleanup;
+	protected Tools $cleanup;
 
 
 	public function __construct( $cleanup ) {

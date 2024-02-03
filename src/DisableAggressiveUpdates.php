@@ -2,7 +2,7 @@
 
 namespace Art\Cleaner;
 
-class Disable_Aggressive_Updates {
+class DisableAggressiveUpdates {
 
 	public function init_hooks(): void {
 
@@ -41,8 +41,8 @@ class Disable_Aggressive_Updates {
 
 		if ( ! empty( $_SERVER['HTTP_USER_AGENT'] ) ) {
 			$user_agent = sanitize_text_field( wp_unslash( $_SERVER['HTTP_USER_AGENT'] ) );
-		}
 
-		add_filter( 'pre_site_transient_browser_' . md5( $user_agent ), '__return_empty_array' );
+			add_filter( 'pre_site_transient_browser_' . md5( $user_agent ), '__return_empty_array' );
+		}
 	}
 }

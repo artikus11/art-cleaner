@@ -1,8 +1,8 @@
 <?php
 
-namespace Art\Cleaner;
+namespace Art\Cleaner\Woocommerce;
 
-class Woocommerce_Disabled {
+class Disabled {
 
 	public function init_hooks(): void {
 

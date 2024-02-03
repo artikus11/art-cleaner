@@ -13,9 +13,9 @@
     }
   ],
   "autoload": {
-    "classmap": [
-      "classes"
-    ]
+    "psr-4": {
+      "Art\\Cleaner\\": "src/"
+    }
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "^3.7",

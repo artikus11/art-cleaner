@@ -9,7 +9,7 @@
 
 namespace Art\Cleaner;
 
-class Cleanup {
+class CleanupHead {
 
 
 	public function init_hooks(): void {

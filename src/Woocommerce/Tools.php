@@ -1,10 +1,10 @@
 <?php
 
-namespace Art\Cleaner;
+namespace Art\Cleaner\Woocommerce;
 
 use Automattic\WooCommerce\Internal\Utilities\Users;
 
-class Woocommerce_Cleanup {
+class Tools {
 
 	public function init_hooks(): void {
 
