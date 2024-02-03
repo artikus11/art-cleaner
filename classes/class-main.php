@@ -25,7 +25,6 @@ class Main {
 		$this->updater_init();
 		$this->init_cli();
 
-
 		add_action( 'after_setup_theme', [ $this, 'init_hooks' ] );
 	}
 
@@ -47,13 +46,11 @@ class Main {
 		( new Hide() )->init_hooks();
 		( new Cleanup() )->init_hooks();
 
-		if ( class_exists( 'Woocommerce' ) && ! defined( 'WP_CLI' ) ) {
+		if ( class_exists( 'Woocommerce' ) && ! $this->is_cli() ) {
 			( new Woocommerce_Disabled() )->init_hooks();
 
 			$this->flushing->init_hooks();
-
 		}
-
 	}
 
 
@@ -68,18 +65,15 @@ class Main {
 		try {
 			/**
 			 * Method WP_CLI::add_command() accepts class as callable.
-			 *
-			 * @noinspection PhpParamsInspection
 			 */
 			WP_CLI::add_command(
 				'acl',
 				$this->cli,
-				[ 'shortdesc' => 'Flushing logs, completed cron tasks and order notes.', ]
+				[ 'shortdesc' => 'Flushing logs, completed cron tasks and order notes.' ]
 			);
 		} catch ( Exception $ex ) {
 			return;
 		}
-
 	}
 
 
@@ -88,7 +82,7 @@ class Main {
 		$updater = new Updater( ACL_PLUGIN_AFILE );
 		$updater->set_repository( 'art-cleaner' );
 		$updater->set_username( 'artikus11' );
-		//$updater->set_authorize( 'Z2hwX3BaWlVBSW43NU9wczl1Tk5MVkdJVUFnYUVlblNEUzBqQWh0UQ==' );
+
 		$updater->init();
 	}
 
@@ -100,5 +94,4 @@ class Main {
 
 		return defined( 'WP_CLI' ) && constant( 'WP_CLI' );
 	}
-
 }

@@ -9,6 +9,8 @@
 
 namespace Art\Cleaner;
 
+use WP_Admin_Bar;
+
 class Hide {
 
 	public function init_hooks() {
@@ -35,13 +37,14 @@ class Hide {
 		}
 
 		add_action( 'wp_dashboard_setup', [ $this, 'dashboard' ], 100 );
-		add_action( 'admin_menu', [ $this, 'admin_menu' ] );
 
 		add_filter( 'wp_count_comments', [ $this, 'count_comments_empty' ] );
 		add_filter( 'intermediate_image_sizes', [ $this, 'delete_intermediate_image_sizes' ] );
 
-		// Remove unwanted SVG filter injection WP
-		//remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
+		/**
+		 * Remove unwanted SVG filter injection WP
+		 */
+		remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
 		remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
 	}
 
@@ -95,14 +98,12 @@ class Hide {
 	/**
 	 * Изменяет базовый набор элементов (ссылок) в тулбаре.
 	 *
-	 * @param $wp_admin_bar
+	 * @param WP_Admin_Bar $wp_admin_bar The WP_Admin_Bar instance, passed by reference.
 	 *
 	 * @return void
 	 */
 	public function admin_bar( $wp_admin_bar ): void {
 
-		//$wp_admin_bar->remove_node('edit');
-		//$wp_admin_bar->remove_node('customize');
 		$wp_admin_bar->remove_node( 'wp-logo' );
 		$wp_admin_bar->remove_node( 'comments' );
 		$wp_admin_bar->remove_node( 'new-content' );
@@ -120,7 +121,6 @@ class Hide {
 		$wp_admin_bar->remove_node( 'wpdiscuz' );
 		$wp_admin_bar->remove_node( 'duplicate-post' );
 		$wp_admin_bar->remove_node( 'updraft_admin_node' );
-
 	}
 
 
@@ -135,7 +135,6 @@ class Hide {
 
 		$wp_admin_bar->remove_node( 'updraft_admin_node' );
 		$wp_admin_bar->remove_node( 'wp-optimize-node' );
-
 	}
 
 
@@ -180,22 +179,8 @@ class Hide {
 			$dash_normal['aioseo-rss-feed'],
 			$dash_normal['wcfm_dashboard_status']
 		);
-
 	}
 
-
-	/**
-	 * Изменяет набор пунктов меню в админке.
-	 *
-	 * @return void
-	 */
-	public function admin_menu() {
-
-		//remove_menu_page( 'tools.php' );
-		//remove_menu_page( 'edit-comments.php' );
-		//remove_menu_page( 'upload.php' );
-		//remove_menu_page( 'index.php' );
-	}
 
 
 	/**
@@ -208,5 +193,4 @@ class Hide {
 		$screen = get_current_screen();
 		$screen->remove_help_tabs();
 	}
-
 }

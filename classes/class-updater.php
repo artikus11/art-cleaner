@@ -10,7 +10,6 @@ namespace Art\Cleaner;
  * @see     https://github.com/rayman813/smashing-updater-plugin
  * @see     https://www.smashingmagazine.com/2015/08/deploy-wordpress-plugins-with-github-using-transients/
  * @see     https://github.com/MilesS/smashing-updater-plugin
- *
  */
 class Updater {
 
@@ -60,13 +59,9 @@ class Updater {
 		$this->file = $file;
 
 		add_action( 'admin_init', [ $this, 'set_plugin_properties' ] );
-
 	}
 
 
-	/**
-	 *
-	 */
 	public function set_plugin_properties(): void {
 
 		$this->plugin   = get_plugin_data( $this->file );
@@ -76,18 +71,18 @@ class Updater {
 
 
 	/**
-	 * @param $username
+	 * @param  string $username Username on GitHub.
 	 */
-	public function set_username( $username ): void {
+	public function set_username( string $username ): void {
 
 		$this->username = $username;
 	}
 
 
 	/**
-	 * @param $repository
+	 * @param  string $repository Repository name on GitHub.
 	 */
-	public function set_repository( $repository ): void {
+	public function set_repository( string $repository ): void {
 
 		$this->repository = $repository;
 	}
@@ -102,62 +97,56 @@ class Updater {
 	}
 
 
-	/**
-	 *
-	 */
 	private function get_repository_data(): void {
 
 		$args = [];
 
-		if ( empty( $this->github_response ) ) {
+		if ( ! empty( $this->github_response ) ) {
+			return;
+		}
 
-			$request_uri = sprintf( 'https://api.github.com/repos/%s/%s/releases/latest', $this->username, $this->repository );
+		$request_uri = sprintf( 'https://api.github.com/repos/%s/%s/releases/latest', $this->username, $this->repository );
 
-			if ( $this->authorize_token ) {
-				$args ['headers'] = [
-					'Authorization' => 'Bearer ' . base64_decode( $this->authorize_token ),
-				];
+		if ( $this->authorize_token ) {
+			$args ['headers'] = [
+				'Authorization' => 'Bearer ' . base64_decode( $this->authorize_token ), // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_decode
+			];
+		}
+
+		$request = wp_remote_get( $request_uri, $args );
+
+		$response = [];
+
+		if ( ! is_wp_error( $request ) ) {
+			try {
+				$response = json_decode( wp_remote_retrieve_body( $request ), true, 512, JSON_THROW_ON_ERROR );
+			} catch ( \JsonException $e ) {
+				return;
 			}
+		}
 
-			$request = wp_remote_get( $request_uri, $args );
+		if ( is_array( $response ) && ! empty( $response['assets'] ) ) {
+			$assets = current( $response['assets'] );
 
-			$response = [];
+			$changelog = wp_remote_get(
+				sprintf(
+					'https://raw.githubusercontent.com/%s/%s/master/CHANGELOG.md',
+					$this->username,
+					$this->repository
+				)
+			);
 
-			if ( ! is_wp_error( $request ) ) {
-				try {
-					$response = json_decode( wp_remote_retrieve_body( $request ), true, 512, JSON_THROW_ON_ERROR );
-				} catch ( \JsonException $e ) {
-					return;
-				}
-			}
-
-			if ( is_array( $response ) && ! empty( $response['assets'] ) ) {
-				$assets = current( $response['assets'] );
-
-				$changelog = file_get_contents(
-					sprintf(
-						'https://raw.githubusercontent.com/%s/%s//master/CHANGELOG.md',
-						$this->username,
-						$this->repository
-					)
-				);
-
-				$this->github_response = [
-					'tag_name'      => $response['tag_name'],
-					'downloaded'    => $assets['download_count'],
-					'updates'       => '<pre style="border:none;width: 100%;word-break: break-all;white-space: pre;">' . $changelog . '</pre>',
-					'last_updated'  => $response['published_at'],
-					'download_link' => $assets['browser_download_url'],
-				];
-			}
-
+			$this->github_response = [
+				'tag_name'      => $response['tag_name'],
+				'downloaded'    => $assets['download_count'],
+				'updates'       => '<pre style="border:none;width: 100%;word-break: break-all;white-space: pre;">' . $changelog . '</pre>',
+				'last_updated'  => $response['published_at'],
+				'download_link' => $assets['browser_download_url'],
+			];
 		}
 	}
 
 
-	/**
-	 *
-	 */
 	public function init(): void {
 
 		add_filter( 'pre_set_site_transient_update_plugins', [ $this, 'modify_transient' ], 10, 1 );
@@ -168,7 +157,7 @@ class Updater {
 			'upgrader_pre_download',
 			function () {
 
-				add_filter( 'http_request_args', [ $this, 'download_package' ], 15, 2 );
+				add_filter( 'http_request_args', [ $this, 'download_package' ], 15, 1 );
 
 				return false;
 			}
@@ -176,9 +165,6 @@ class Updater {
 	}
 
 
-	/**
-	 *
-	 */
 	public function modify_transient( $transient ) {
 
 		if ( empty( property_exists( $transient, 'checked' ) ) ) {
@@ -206,7 +192,7 @@ class Updater {
 			$slug = current( explode( '/', $this->basename ) );
 
 			$plugin = [
-				'url'         => $this->plugin["PluginURI"],
+				'url'         => $this->plugin['PluginURI'],
 				'slug'        => $slug,
 				'package'     => $new_files,
 				'new_version' => $this->github_response['tag_name'],
@@ -219,17 +205,14 @@ class Updater {
 	}
 
 
-	/**
-	 *
-	 */
 	public function plugin_popup( $result, $action, $args ) {
 
-		if ( ! empty( $args->slug ) && $args->slug === current( explode( '/', $this->basename ) ) ) {
+		if ( ! empty( $args->slug ) && current( explode( '/', $this->basename ) ) === $args->slug ) {
 
 			$this->get_repository_data();
 
 			$plugin = [
-				'name'              => $this->plugin["Name"],
+				'name'              => $this->plugin['Name'],
 				'slug'              => $this->basename,
 				'requires'          => '5.5',
 				'tested'            => '6.1',
@@ -238,13 +221,13 @@ class Updater {
 				'downloaded'        => $this->github_response['downloaded'],
 				'added'             => $this->github_response['last_updated'],
 				'version'           => $this->github_response['tag_name'],
-				'author'            => $this->plugin["AuthorName"],
-				'author_profile'    => $this->plugin["AuthorURI"],
+				'author'            => $this->plugin['AuthorName'],
+				'author_profile'    => $this->plugin['AuthorURI'],
 				'last_updated'      => $this->github_response['last_updated'],
-				'homepage'          => $this->plugin["PluginURI"],
-				'short_description' => $this->plugin["Description"],
+				'homepage'          => $this->plugin['PluginURI'],
+				'short_description' => $this->plugin['Description'],
 				'sections'          => [
-					'Description' => $this->plugin["Description"],
+					'Description' => $this->plugin['Description'],
 					'Updates'     => $this->github_response['updates'],
 				],
 				'download_link'     => $this->github_response['download_link'],
@@ -257,14 +240,14 @@ class Updater {
 	}
 
 
-	public function download_package( $args, $url ) {
+	public function download_package( $args ) {
 
-		if ( ( null !== $args['filename'] ) && $this->authorize_token ) {
+		if ( $args['filename'] && $this->authorize_token ) {
 			$args = array_merge(
 				$args,
 				[
-					"headers" => [
-						"Authorization" => "token {$this->authorize_token}",
+					'headers' => [
+						'Authorization' => "token $this->authorize_token",
 					],
 				]
 			);
@@ -290,5 +273,4 @@ class Updater {
 
 		return $result;
 	}
-
 }

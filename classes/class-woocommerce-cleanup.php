@@ -19,7 +19,6 @@ class Woocommerce_Cleanup {
 		add_filter( 'action_scheduler_cleanup_batch_size', [ $this, 'cleanup_batch_size' ], 100 );
 	}
 
-
 	public function add_tools( array $tools ): array {
 
 		$tools['clear_scheduler_actions'] = [
@@ -46,12 +45,12 @@ class Woocommerce_Cleanup {
 		return $tools;
 	}
 
-
 	public function clear_order_notes(): string {
 
 		global $wpdb;
 
 		$result = absint(
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->query(
 				"DELETE
 						    p
@@ -69,12 +68,12 @@ class Woocommerce_Cleanup {
 		return sprintf( 'Успешно удалено %d сообщений.', absint( $result ) );
 	}
 
-
 	public function select_order_notes(): string {
 
 		global $wpdb;
 
 		$result = absint(
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->query(
 				"SELECT *
 						    FROM
@@ -91,12 +90,12 @@ class Woocommerce_Cleanup {
 		return sprintf( 'Получено %d сообщений.', absint( $result ) );
 	}
 
-
 	public function clear_scheduler_actions(): string {
 
 		global $wpdb;
 
 		$result = absint(
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->query(
 				"DELETE 
 							FROM {$wpdb->prefix}actionscheduler_actions
@@ -110,54 +109,50 @@ class Woocommerce_Cleanup {
 		return sprintf( 'Успешно удалено %d задач.', absint( $result ) );
 	}
 
-
 	public function select_scheduler_actions(): string {
 
 		global $wpdb;
 
-		$result =
-			$wpdb->query(
-				"SELECT *
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+		$result = $wpdb->query(
+			"SELECT *
 							FROM {$wpdb->prefix}actionscheduler_actions
 							WHERE `status` 
 						        IN ( 'canceled', 'failed', 'complete' )"
-
-			);
+		);
 
 		return sprintf( 'Успешно получено %d задач.', $result );
 	}
-
 
 	public function clear_scheduler_actions_logs(): string {
 
 		global $wpdb;
 
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 		$wpdb->query( "TRUNCATE `{$wpdb->prefix}actionscheduler_logs`" );
 
 		return 'Журнал задач успешно очищен.';
 	}
-
 
 	public function select_scheduler_actions_logs(): string {
 
 		global $wpdb;
 
 		$result = absint(
+		// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
 			$wpdb->query(
 				"SELECT *
 	                    FROM `{$wpdb->prefix}actionscheduler_logs`"
 			)
 		);
 
-		return sprintf( 'Получено %d журналов.', absint( $result )  );
+		return sprintf( 'Получено %d журналов.', absint( $result ) );
 	}
 
-
-	public function retention_period( $period ) {
+	public function retention_period() {
 
 		return DAY_IN_SECONDS;
 	}
-
 
 	public function default_cleaner_statuses( $statuses ) {
 
@@ -166,10 +161,8 @@ class Woocommerce_Cleanup {
 		return $statuses;
 	}
 
-
-	public function cleanup_batch_size( $batch_size ): int {
+	public function cleanup_batch_size(): int {
 
 		return 100;
 	}
-
 }

@@ -29,18 +29,16 @@ class Woocommerce_Disabled {
 		add_filter( 'woocommerce_allow_marketplace_suggestions', '__return_false', 999 );
 		add_filter( 'woocommerce_apply_user_tracking', '__return_false', 999 );
 		add_filter( 'woocommerce_apply_tracking', '__return_false', 999 );
-
 	}
-
 
 	/**
 	 * Отключение разделов Аналитика, Маркетинг и страницы Обзор
 	 *
-	 * @param $feature_config
+	 * @param  array $feature_config Array of feature slugs.
 	 *
 	 * @return array
 	 */
-	public function feature_config( $feature_config ): array {
+	public function feature_config( array $feature_config ): array {
 
 		$feature_config['activity-panels']                   = false;
 		$feature_config['analytics']                         = false;
@@ -63,7 +61,6 @@ class Woocommerce_Disabled {
 		return $feature_config;
 	}
 
-
 	public function disable_features( $features ) {
 
 		$marketing = array_search( 'marketing', $features, true );
@@ -72,14 +69,11 @@ class Woocommerce_Disabled {
 		return $features;
 	}
 
-
 	public function disable_wc_admin_app(): void {
 
 		wp_dequeue_style( 'wc-admin-app' );
 		wp_deregister_style( 'wc-admin-app' );
-
 	}
-
 
 	public function disable_woocommerce_status(): void {
 
@@ -89,7 +83,6 @@ class Woocommerce_Disabled {
 		remove_meta_box( 'wc_admin_dashboard_setup', 'dashboard', 'normal' );
 	}
 
-
 	public function remove_admin_addon_submenu(): void {
 
 		remove_submenu_page( 'woocommerce', 'wc-admin' );
@@ -98,5 +91,4 @@ class Woocommerce_Disabled {
 		remove_submenu_page( 'woocommerce', 'wc-addons&section=helper' );
 		remove_submenu_page( 'woocommerce', 'wc-admin&path=/extensions' );
 	}
-
 }
