@@ -2,6 +2,15 @@
 
 namespace Art\Cleaner;
 
+use Art\Cleaner\Admin\Options;
+use Art\Cleaner\Admin\Settings;
+use Art\Cleaner\Core\Cleanup_Admin;
+use Art\Cleaner\Core\Cleanup_Bar;
+use Art\Cleaner\Core\Cleanup_Dashboard;
+use Art\Cleaner\Core\Cleanup_Head;
+use Art\Cleaner\Core\Disable_Aggressive_Updates;
+use Art\Cleaner\Core\Disable_Emoji;
+use Art\Cleaner\Core\Disable_Feed;
 use Art\Cleaner\Woocommerce\Disabled;
 use Art\Cleaner\Woocommerce\Tools;
 use Exception;
@@ -14,6 +23,7 @@ class Main {
 	 */
 	protected CLI $cli;
 
+
 	/**
 	 * @var \Art\Cleaner\Woocommerce\Tools
 	 */
@@ -24,15 +34,75 @@ class Main {
 	protected Updater $updater;
 
 
-	public function __construct() {
+	/**
+	 * @var \Art\Cleaner\Admin\Options
+	 */
+	protected Options $wposa;
 
-		$this->flushing = new Tools();
-		$this->updater  = new Updater( ACL_PLUGIN_AFILE );
 
-		$this->updater_init( $this->updater );
-		$this->init_cli();
+	/**
+	 * @var \Art\Cleaner\Admin\Settings
+	 */
+	protected Settings $settings;
 
-		add_action( 'after_setup_theme', [ $this, 'init_hooks' ] );
+
+	/**
+	 * @var \Art\Cleaner\Utils
+	 */
+	protected $utils;
+
+
+	public function init() {
+
+		add_action( 'plugins_loaded', [ $this, 'init_all' ], - PHP_INT_MAX );
+	}
+
+
+	public function init_all() {
+
+		//$this->init_cli();
+		$this->init_classes();
+		$this->init_condition_classes();
+	}
+
+
+	public function init_classes() {
+
+		$this->utils    = new Utils();
+		$this->wposa    = new Options( $this->utils );
+		$this->settings = new Settings( $this->wposa, $this->utils );
+	}
+
+
+	public function init_condition_classes() {
+
+		if ( is_admin() && 'yes' === Options::get( 'disable_aggressive_updates', 'general' ) ) {
+			( new Disable_Aggressive_Updates() )->init_hooks();
+		}
+
+		if ( 'yes' === Options::get( 'disable_emoji', 'general' ) ) {
+			( new Disable_Emoji() )->init_hooks();
+		}
+
+		if ( 'yes' === Options::get( 'disable_feed', 'general' ) ) {
+			( new Disable_Feed() )->init_hooks();
+		}
+
+		if ( ! is_admin() ) {
+			( new Cleanup_Head() )->init_hooks();
+		}
+
+		( new Cleanup_Admin() )->init_hooks();
+
+		if ( is_admin()  && 'yes' === Options::get( 'cleanup_dashboard', 'admin' ) ) {
+			( new Cleanup_Dashboard() )->init_hooks();
+		}
+
+		if ( is_admin()  && 'yes' === Options::get( 'cleanup_admin_bar', 'admin' ) ) {
+			( new Cleanup_Bar() )->init_hooks();
+		}
+
+
 	}
 
 
@@ -48,16 +118,9 @@ class Main {
 				);
 			}
 		} );
+		/*if ( class_exists( 'Woocommerce' ) && ! $this->is_cli() ) {
 
-		( new DisableAggressiveUpdates() )->init_hooks();
-		( new Hide() )->init_hooks();
-		( new CleanupHead() )->init_hooks();
-
-		if ( class_exists( 'Woocommerce' ) && ! $this->is_cli() ) {
-			( new Disabled() )->init_hooks();
-
-			$this->flushing->init_hooks();
-		}
+		}*/
 	}
 
 
@@ -67,7 +130,7 @@ class Main {
 			return;
 		}
 
-		$this->cli = new CLI( $this->flushing );
+		$this->cli = new CLI( $this->tools );
 
 		try {
 			/**
