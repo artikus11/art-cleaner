@@ -4,8 +4,8 @@
  * Plugin URI: wpruse.ru
  * Text Domain: art-cleaner
  * Domain Path: /languages
- * Description: Plugin for WooCommerce. Quick order of products which are currently in the cart
- * Version: 1.2.2
+ * Description: Cleans WP code from unnecessary garbage and more!
+ * Version: 2.0.0
  * Author: Artem Abramovich
  * Author URI: https://wpruse.ru/
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
@@ -19,28 +19,20 @@
  * Copyright Artem Abramovich
  */
 
-use Art\Cleaner\Main;
-
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-$plugin_data = get_file_data(
-	__FILE__,
-	[
-		'ver'  => 'Version',
-		'name' => 'Plugin Name',
-	]
-);
-
 const ACL_PLUGIN_DIR   = __DIR__;
 const ACL_PLUGIN_AFILE = __FILE__;
-define( 'ACL_PLUGIN_URI', plugin_dir_url( __FILE__ ) );
-define( 'ACL_PLUGIN_FILE', plugin_basename( __FILE__ ) );
+const ACL_PLUGIN_VER   = '2.0.0';
+const ACL_PLUGIN_NAME  = 'Art Cleaner';
+const ACL_PLUGIN_SLUG  = 'art-cleaner';
+const ACL_PLUGIN_PREFIX  = 'acl';
 
-define( 'ACL_PLUGIN_VER', $plugin_data['ver'] );
-define( 'ACL_PLUGIN_NAME', $plugin_data['name'] );
+define( 'ACL_PLUGIN_URI', untrailingslashit( plugin_dir_url( ACL_PLUGIN_AFILE ) ) );
+define( 'ACL_PLUGIN_FILE', plugin_basename( __FILE__ ) );
 
 require ACL_PLUGIN_DIR . '/vendor/autoload.php';
 
-new Main();
+( new Art\Cleaner\Main() )->init();
