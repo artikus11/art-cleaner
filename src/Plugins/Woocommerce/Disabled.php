@@ -1,6 +1,6 @@
 <?php
 
-namespace Art\Cleaner\Woocommerce;
+namespace Art\Cleaner\Plugins\Woocommerce;
 
 class Disabled {
 

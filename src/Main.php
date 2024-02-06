@@ -27,7 +27,9 @@ class Main {
 	/**
 	 * @var \Art\Cleaner\Woocommerce\Tools
 	 */
-	protected Tools $flushing;
+	protected Tools $tools;
+
+
 	/**
 	 * @var \Art\Cleaner\Updater
 	 */

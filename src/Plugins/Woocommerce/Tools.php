@@ -1,6 +1,6 @@
 <?php
 
-namespace Art\Cleaner\Woocommerce;
+namespace Art\Cleaner\Plugins\Woocommerce;
 
 use Automattic\WooCommerce\Internal\Utilities\Users;
 
@@ -13,11 +13,8 @@ class Tools {
 		}
 
 		add_filter( 'woocommerce_debug_tools', [ $this, 'add_tools' ] );
-
-		add_filter( 'action_scheduler_retention_period', [ $this, 'retention_period' ], 100 );
-		add_filter( 'action_scheduler_default_cleaner_statuses', [ $this, 'default_cleaner_statuses' ], 100 );
-		add_filter( 'action_scheduler_cleanup_batch_size', [ $this, 'cleanup_batch_size' ], 100 );
 	}
+
 
 	public function add_tools( array $tools ): array {
 
@@ -45,6 +42,7 @@ class Tools {
 		return $tools;
 	}
 
+
 	public function clear_order_notes(): string {
 
 		global $wpdb;
@@ -68,6 +66,7 @@ class Tools {
 		return sprintf( 'Успешно удалено %d сообщений.', absint( $result ) );
 	}
 
+
 	public function select_order_notes(): string {
 
 		global $wpdb;
@@ -90,6 +89,7 @@ class Tools {
 		return sprintf( 'Получено %d сообщений.', absint( $result ) );
 	}
 
+
 	public function clear_scheduler_actions(): string {
 
 		global $wpdb;
@@ -109,6 +109,7 @@ class Tools {
 		return sprintf( 'Успешно удалено %d задач.', absint( $result ) );
 	}
 
+
 	public function select_scheduler_actions(): string {
 
 		global $wpdb;
@@ -124,6 +125,7 @@ class Tools {
 		return sprintf( 'Успешно получено %d задач.', $result );
 	}
 
+
 	public function clear_scheduler_actions_logs(): string {
 
 		global $wpdb;
@@ -133,6 +135,7 @@ class Tools {
 
 		return 'Журнал задач успешно очищен.';
 	}
+
 
 	public function select_scheduler_actions_logs(): string {
 
@@ -147,22 +150,5 @@ class Tools {
 		);
 
 		return sprintf( 'Получено %d журналов.', absint( $result ) );
-	}
-
-	public function retention_period() {
-
-		return DAY_IN_SECONDS;
-	}
-
-	public function default_cleaner_statuses( $statuses ) {
-
-		$statuses[] = 'failed';
-
-		return $statuses;
-	}
-
-	public function cleanup_batch_size(): int {
-
-		return 100;
 	}
 }

@@ -11,12 +11,12 @@ use function WP_CLI\Utils\make_progress_bar;
 
 class CLI {
 
-	protected Tools $cleanup;
+	protected Tools $tools;
 
 
-	public function __construct( $cleanup ) {
+	public function __construct( $tools ) {
 
-		$this->cleanup = $cleanup;
+		$this->tools = $tools;
 	}
 
 
