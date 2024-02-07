@@ -9,6 +9,7 @@ use Art\Cleaner\Core\Cleanup_Bar;
 use Art\Cleaner\Core\Cleanup_Dashboard;
 use Art\Cleaner\Core\Cleanup_Head;
 use Art\Cleaner\Core\Disable_Aggressive_Updates;
+use Art\Cleaner\Core\Disable_Embeds;
 use Art\Cleaner\Core\Disable_Emoji;
 use Art\Cleaner\Core\Disable_Feed;
 use Art\Cleaner\Woocommerce\Disabled;
@@ -90,21 +91,23 @@ class Main {
 			( new Disable_Feed() )->init_hooks();
 		}
 
+		if ( 'yes' === Options::get( 'disable_embeds', 'general' ) ) {
+			( new Disable_Embeds() )->init_hooks();
+		}
+
 		if ( ! is_admin() ) {
 			( new Cleanup_Head() )->init_hooks();
 		}
 
 		( new Cleanup_Admin() )->init_hooks();
 
-		if ( is_admin()  && 'yes' === Options::get( 'cleanup_dashboard', 'admin' ) ) {
+		if ( is_admin() && 'yes' === Options::get( 'cleanup_dashboard', 'admin' ) ) {
 			( new Cleanup_Dashboard() )->init_hooks();
 		}
 
-		if ( is_admin()  && 'yes' === Options::get( 'cleanup_admin_bar', 'admin' ) ) {
+		if ( is_admin() && 'yes' === Options::get( 'cleanup_admin_bar', 'admin' ) ) {
 			( new Cleanup_Bar() )->init_hooks();
 		}
-
-
 	}
 
 

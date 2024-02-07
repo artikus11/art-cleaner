@@ -101,6 +101,21 @@ class Settings {
 			]
 		);
 
+		$this->wposa->add_field(
+			'general',
+			[
+				'id'      => 'disable_embeds',
+				'type'    => 'select',
+				'name'    => 'Отключение Embeds',
+				'options' => [
+					'yes' => 'Да',
+					'no'  => 'Нет',
+				],
+				'default' => 'no',
+				'desc'    => 'Отключает возможность вставки ссылок с контенте с других сайтов',
+			]
+		);
+
 
 	}
 
