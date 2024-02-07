@@ -101,8 +101,7 @@
     <!-- Disallow long array syntax. -->
     <rule ref="Generic.Arrays.DisallowLongArraySyntax.Found"/>
 
-    <!-- Prohibit Yoda Conditions expressions -->
-    <rule ref="Generic.ControlStructures.DisallowYodaConditions"/>
+
 
     <!-- Forbidden functions -->
     <rule ref="Generic.PHP.ForbiddenFunctions">
