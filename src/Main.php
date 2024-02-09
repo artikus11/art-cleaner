@@ -105,7 +105,7 @@ class Main {
 			( new Cleanup_Dashboard() )->init_hooks();
 		}
 
-		if ( is_admin() && 'yes' === Options::get( 'cleanup_admin_bar', 'admin' ) ) {
+		if ( 'yes' === Options::get( 'cleanup_admin_bar', 'admin' ) ) {
 			( new Cleanup_Bar() )->init_hooks();
 		}
 	}
