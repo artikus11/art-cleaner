@@ -8,6 +8,7 @@ use Art\Cleaner\Core\Cleanup_Admin;
 use Art\Cleaner\Core\Cleanup_Bar;
 use Art\Cleaner\Core\Cleanup_Dashboard;
 use Art\Cleaner\Core\Cleanup_Head;
+use Art\Cleaner\Core\Cleanup_Widgets;
 use Art\Cleaner\Core\Disable_Aggressive_Updates;
 use Art\Cleaner\Core\Disable_Embeds;
 use Art\Cleaner\Core\Disable_Emoji;
@@ -107,6 +108,10 @@ class Main {
 
 		if ( 'yes' === Options::get( 'cleanup_admin_bar', 'admin' ) ) {
 			( new Cleanup_Bar() )->init_hooks();
+		}
+
+		if ( 'yes' === Options::get( 'cleanup_widgets', 'admin' ) ) {
+			( new Cleanup_Widgets() )->init_hooks();
 		}
 	}
 
