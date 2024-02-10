@@ -7,7 +7,7 @@
  * @source https://wp-kama.ru/hook/wp_head#udalenie-funktsij-wp-iz-wp_head
  */
 
-namespace Art\Cleaner\Core;
+namespace Art\Cleaner\Cleanup_Core;
 
 use Art\Cleaner\Admin\Options;
 

@@ -7,7 +7,7 @@
  * @source https://wordpress.org/plugins/disable-feeds/
  */
 
-namespace Art\Cleaner\Core;
+namespace Art\Cleaner\Cleanup_Core;
 
 class Disable_Feed {
 

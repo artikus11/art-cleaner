@@ -7,7 +7,7 @@
  * @source https://wordpress.org/plugins/disable-embeds/
  */
 
-namespace Art\Cleaner\Core;
+namespace Art\Cleaner\Cleanup_Core;
 
 use Art\Cleaner\Utils;
 use WP_Scripts;

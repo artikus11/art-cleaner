@@ -4,15 +4,14 @@ namespace Art\Cleaner;
 
 use Art\Cleaner\Admin\Options;
 use Art\Cleaner\Admin\Settings;
-use Art\Cleaner\Core\Cleanup_Admin;
-use Art\Cleaner\Core\Cleanup_Bar;
-use Art\Cleaner\Core\Cleanup_Dashboard;
-use Art\Cleaner\Core\Cleanup_Head;
-use Art\Cleaner\Core\Cleanup_Widgets;
-use Art\Cleaner\Core\Disable_Aggressive_Updates;
-use Art\Cleaner\Core\Disable_Embeds;
-use Art\Cleaner\Core\Disable_Emoji;
-use Art\Cleaner\Core\Disable_Feed;
+use Art\Cleaner\Cleanup_Core\Cleanup_Bar;
+use Art\Cleaner\Cleanup_Core\Cleanup_Dashboard;
+use Art\Cleaner\Cleanup_Core\Cleanup_Head;
+use Art\Cleaner\Cleanup_Core\Cleanup_Widgets;
+use Art\Cleaner\Cleanup_Core\Disable_Aggressive_Updates;
+use Art\Cleaner\Cleanup_Core\Disable_Embeds;
+use Art\Cleaner\Cleanup_Core\Disable_Emoji;
+use Art\Cleaner\Cleanup_Core\Disable_Feed;
 use Art\Cleaner\Woocommerce\Disabled;
 use Art\Cleaner\Woocommerce\Tools;
 use Exception;
@@ -99,8 +98,6 @@ class Main {
 		if ( ! is_admin() ) {
 			( new Cleanup_Head() )->init_hooks();
 		}
-
-		( new Cleanup_Admin() )->init_hooks();
 
 		if ( is_admin() && 'yes' === Options::get( 'cleanup_dashboard', 'admin' ) ) {
 			( new Cleanup_Dashboard() )->init_hooks();

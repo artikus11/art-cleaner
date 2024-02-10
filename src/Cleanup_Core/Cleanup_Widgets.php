@@ -1,6 +1,12 @@
 <?php
+/**
+ * Class Cleanup_Widgets
+ *
+ * @since   2.0.0
+ * @package art-cleaner
+ */
 
-namespace Art\Cleaner\Core;
+namespace Art\Cleaner\Cleanup_Core;
 
 use Art\Cleaner\Admin\Options;
 

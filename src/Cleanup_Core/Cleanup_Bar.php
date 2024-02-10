@@ -1,6 +1,12 @@
 <?php
+/**
+ * Class Cleanup_Bar
+ *
+ * @since   2.0.0
+ * @package art-cleaner
+ */
 
-namespace Art\Cleaner\Core;
+namespace Art\Cleaner\Cleanup_Core;
 
 class Cleanup_Bar {
 

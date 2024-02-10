@@ -1,6 +1,6 @@
 <?php
 
-namespace Art\Cleaner\Plugins\Woocommerce;
+namespace Art\Cleaner\Cleanup_Plugins\Woocommerce;
 
 use Automattic\WooCommerce\Internal\Utilities\Users;
 
