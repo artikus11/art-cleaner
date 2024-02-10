@@ -2,6 +2,8 @@
 
 namespace Art\Cleaner\Core;
 
+use Art\Cleaner\Admin\Options;
+
 class Cleanup_Widgets {
 
 	public function init_hooks(): void {
@@ -12,19 +14,11 @@ class Cleanup_Widgets {
 
 	public function remove_widgets() {
 
-		global $wp_widget_factory;
+		$widgets = Options::get( 'cleanup_widgets', 'admin' );
 
-		$widgets = $wp_widget_factory->widgets;
-
-		$allowed_widgets = [
-			'WP_Widget_Text',
-			'WP_Widget_Custom_HTML',
-			'WP_Widget_Block',
-		];
-
-		foreach ( $widgets as $widget_key => $widget ) {
-			if ( ! in_array( $widget_key, $allowed_widgets, true ) ) {
-				$wp_widget_factory->unregister( $widget_key );
+		if ( $widgets ) {
+			foreach ( $widgets as $widget_key => $widget ) {
+				unregister_widget( $widget_key );
 			}
 		}
 	}

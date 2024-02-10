@@ -482,7 +482,9 @@ class Options {
 				$sanitize_callback = $field['sanitize_callback'] ?? '';
 
 				$help_tab = $field['help_tab'] ?? '';
-				$class    = $field['class'] ?? "wposa-form-table__row wposa-form-table__row_type_{$type} wposa-form-table__row_{$section}_{$id}";
+				$class = ! empty( $field['class'] )
+					? "wposa-form-table__row wposa-form-table__row_type_{$type} wposa-form-table__row_{$section}_{$id} {$field['class']}" :
+					"wposa-form-table__row wposa-form-table__row_type_{$type} wposa-form-table__row_{$section}_{$id}";
 
 				$args = [
 					'id'                => $id,
@@ -748,17 +750,37 @@ class Options {
 		$value = $this->get_option( $args['id'], $args['section'], $args['std'] );
 
 		$html = '<fieldset>';
-		foreach ( $args['options'] as $key => $label ) {
-			$checked = isset( $value[ $key ] ) ? $value[ $key ] : '0';
-			$html    .= sprintf( '<label for="wposa-%1$s[%2$s][%3$s]">', $args['section'], $args['id'], $key );
-			$html    .= sprintf( '<input type="checkbox" class="checkbox" id="wposa-%1$s[%2$s][%3$s]" name="%1$s[%2$s][%3$s]" value="%3$s" %4$s />', $args['section'], $args['id'],
-				$key, checked( $checked, $key, false ) );
-			$html    .= sprintf( '%1$s</label><br>', $label );
+
+		foreach ( $args['options'] as $key => $input ) {
+			$checked = $value[ $key ] ?? '0';
+
+			$attributes = [];
+			if ( ! empty( $input['attributes'] ) && is_array( $input['attributes'] ) ) {
+				foreach ( $input['attributes'] as $attribute => $attribute_value ) {
+					$attributes[] = esc_attr( $attribute ) . '="' . esc_attr( $attribute_value ) . '"';
+				}
+			}
+
+			$html .= sprintf( '<label for="wposa-%1$s[%2$s][%3$s]">', $args['section'], $args['id'], $key );
+
+			$html .= sprintf(
+				'<input type="checkbox" class="checkbox %6$s" id="wposa-%1$s[%2$s][%3$s]" name="%1$s[%2$s][%3$s]" value="%3$s" %4$s %5$s />',
+				$args['section'],
+				$args['id'],
+				$key,
+				checked( $checked, $key, false ),
+				implode( ' ', $attributes ),
+				$input['class']
+			);
+
+			$html .= sprintf( '%1$s</label>', $input['label'] );
 		}
-		$html .= $this->get_field_description( $args );
+
 		$html .= '</fieldset>';
 
-		echo wp_kses( $html, self::ALLOWED_HTML );
+		$html .= $this->get_field_description( $args );
+
+		echo $html;
 	}
 
 
@@ -1364,6 +1386,18 @@ class Options {
 					} )
 					.change();
 
+
+				$('[data-select-all]').click(function () {
+
+					var checkbox = $(this);
+
+					var checked = checkbox.prop('checked');
+
+					var name = $(this).data('select-all');
+					$('[data-selectable="' + name + '"]').each(function () {
+						$(this).prop('checked', checked);
+					})
+				})
 			} );
 
 		</script>
@@ -1444,8 +1478,8 @@ class Options {
 			}
 
 			input.wposa-field--switch:checked {
-				border-color: #135e96;
-				box-shadow: inset 20px 0 0 0 #135e96;
+				border-color: #2c3338;
+				box-shadow: inset 20px 0 0 0 #2c3338;
 			}
 
 			input.wposa-field--switch:checked:after {
@@ -1481,6 +1515,11 @@ class Options {
 
 			.wposa-form-table__row_type_number .regular-text {
 				width: 50px;
+			}
+
+			.wposa-form-table__row_type_multicheck fieldset{
+				display:grid;
+				grid-template-columns: repeat(2, 1fr);
 			}
 
 			/*.wposa__form {

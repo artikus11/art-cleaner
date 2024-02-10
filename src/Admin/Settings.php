@@ -165,14 +165,12 @@ class Settings {
 			'admin',
 			[
 				'id'      => 'cleanup_widgets',
-				'type'    => 'select',
-				'name'    => 'Отключить все виджеты',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
-				'desc'    => 'Удаление всех установленных виджетов, кроме разрешенных',
+				'type'    => 'multicheck',
+				'name'    => 'Отключить виджеты',
+				'class'   => 'multicheck-inputs',
+				'options' => $this->get_option_widgets(),
+				'default' => $this->default_widgets(),
+				'desc'    => 'Удаление всех виджетов, кроме не выбранных. Выберите виджет который требуется отключить',
 			]
 		);
 	}
@@ -250,5 +248,68 @@ class Settings {
 				'desc'    => 'Удаляет ссылки вида <code>&lt;link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://site.loc/xmlrpc.php?rsd" /&gt;</code> из секции <code>&lt;head&gt;</code>',
 			]
 		);
+	}
+
+
+	/**
+	 * @return array[]
+	 * @todo при сохранении опции повисает страница, разобраться
+	 */
+	protected function get_option_widgets(): array {
+
+		$option_name = $this->utils->get_plugin_prefix() . '_admin_register_widgets';
+
+		if ( empty( $this->wposa::get( 'cleanup_widgets', 'admin' ) ) ) {
+
+			global $wp_widget_factory;
+
+			$widgets = $wp_widget_factory->widgets;
+
+			add_option( $option_name, $widgets, '', false );
+		} else {
+			$widgets = get_option( $option_name );
+		}
+
+		$widgets_check = [
+			'select_all' => [
+				'label'      => 'Выбрать все',
+				'class'      => '',
+				'attributes' => [
+					'data-select-all' => 'remove',
+				],
+			],
+		];
+
+		foreach ( $widgets as $key => $widget ) {
+			$widgets_check[ $key ] = [
+				'label'      => $widget->name,
+				'class'      => 'checkbox-' . $widget->option_name,
+				'attributes' => [
+					'data-selectable' => 'remove',
+				],
+			];
+		}
+
+		return $widgets_check;
+	}
+
+
+	protected function default_widgets(): array {
+
+		$allowed_widgets = [
+			'WP_Widget_Text',
+			'WP_Widget_Custom_HTML',
+			'WP_Widget_Block',
+		];
+
+		$default_widgets = [];
+
+		foreach ( $this->get_option_widgets() as $key => $widget ) {
+			if ( ! in_array( $key, $allowed_widgets, true ) ) {
+				$default_widgets[ $key ] = $key;
+			}
+		}
+
+		return $default_widgets;
 	}
 }

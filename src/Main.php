@@ -110,9 +110,7 @@ class Main {
 			( new Cleanup_Bar() )->init_hooks();
 		}
 
-		if ( 'yes' === Options::get( 'cleanup_widgets', 'admin' ) ) {
-			( new Cleanup_Widgets() )->init_hooks();
-		}
+		( new Cleanup_Widgets() )->init_hooks();
 	}
 
 
