@@ -15,31 +15,10 @@ class Hide {
 
 	public function init_hooks() {
 
-		// Убирает notice для переключения обратно на Админа.
-		// Это можно сделать и в выпадающем меню профиля админбара.
-		if ( isset( $GLOBALS['user_switching'] ) ) {
-			remove_action( 'all_admin_notices', [ $GLOBALS['user_switching'], 'action_admin_notices' ], 1 );
-		}
-
-
-
-
-		add_action( 'admin_bar_menu', [ $this, 'admin_bar' ], PHP_INT_MAX );
-		add_action( 'wp_before_admin_bar_render', [ $this, 'before_admin_bar' ], PHP_INT_MAX );
-
-		if ( ! current_user_can( 'edit_posts' ) ) {
-			add_action( 'init', [ $this, 'remove_front_admin_bar' ] );
-		}
-
-		add_action( 'wp_dashboard_setup', [ $this, 'dashboard' ], 100 );
 
 		add_filter( 'wp_count_comments', [ $this, 'count_comments_empty' ] );
 		add_filter( 'intermediate_image_sizes', [ $this, 'delete_intermediate_image_sizes' ] );
 
-		/**
-		 * Remove unwanted SVG filter injection WP
-		 */
-		remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
 
 	}
 

@@ -64,10 +64,22 @@ class Disable_Embeds {
 
 	public function disable_embed_variation() {
 
+		$deps = [ 'wp-blocks', 'wp-dom-ready' ];
+
+		global $pagenow;
+
+		if ( 'widgets.php' === $pagenow ) {
+			$deps[] = 'wp-edit-widgets';
+		} elseif ( 'site-editor.php' === $pagenow ) {
+			$deps[] = 'wp-edit-site';
+		} else {
+			$deps[] = 'wp-edit-post';
+		}
+
 		wp_enqueue_script(
 			sprintf( '%s-disable-embed-variation', Utils::get_plugin_prefix() ),
-			sprintf( '%s/assets/js/%s-disable-embed-variation.js', Utils::get_plugin_url(), Utils::get_plugina_prefix() ),
-			[ 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ],
+			sprintf( '%s/assets/js/%s-disable-embed-variation.js', Utils::get_plugin_url(), Utils::get_plugin_prefix() ),
+			$deps,
 			Utils::get_plugin_version(),
 			false
 		);
