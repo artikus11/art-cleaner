@@ -25,27 +25,31 @@ class Cleanup_Bar {
 
 		$nodes = $wp_admin_bar->get_nodes();
 
-		$allowed_nodes = [
-			'user-actions',
-			'user-info',
-			'edit-profile',
-			'my-account',
-			'logout',
-			'top-secondary',
-			'site-name',
-			'view-site',
-			'customize',
-			'edit',
-			'tm-suspend',
-			'tm-view',
-			'languages',
-			'wp-rocket',
-			'rocket-settings',
-			'purge-all',
-			'ppurge-url',
-			'query-monitor',
-			'query-monitor-placeholder',
-		];
+		$allowed_nodes = apply_filters(
+			'acl_allowed_nodes_admin_bar',
+			[
+				'user-actions',
+				'user-info',
+				'edit-profile',
+				'my-account',
+				'logout',
+				'top-secondary',
+				'site-name',
+				'view-site',
+				'customize',
+				'edit',
+				'tm-suspend',
+				'tm-view',
+				'languages',
+				'wp-rocket',
+				'rocket-settings',
+				'purge-all',
+				'ppurge-url',
+				'query-monitor',
+				'query-monitor-placeholder',
+				'view',
+			]
+		);
 
 		foreach ( $nodes as $node_key => $node ) {
 			if ( ! in_array( $node_key, $allowed_nodes, true ) ) {
