@@ -255,6 +255,11 @@ class Settings {
 	}
 
 
+	/**
+	 * Получение активных виджетов перед сохранением
+	 *
+	 * @return void
+	 */
 	public function set_widgets() {
 
 		global $wp_widget_factory;
