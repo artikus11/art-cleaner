@@ -14,18 +14,31 @@ class Cleanup_Widgets {
 
 	public function init_hooks(): void {
 
-		add_action( 'widgets_init', [ $this, 'remove_widgets' ], - PHP_INT_MAX );
+		add_action( 'widgets_init', [ $this, 'remove_widgets' ], 100 );
+
 	}
+
 
 
 	public function remove_widgets() {
 
 		$widgets = Options::get( 'cleanup_widgets', 'admin' );
 
+
 		if ( $widgets ) {
 			foreach ( $widgets as $widget_key => $widget ) {
-				unregister_widget( $widget_key );
+
+				if('select_all' === $widget_key){
+					continue;
+				}
+
+				if (!class_exists($widget_key)){
+					continue;
+				}
+
+				unregister_widget( $widget );
 			}
 		}
+		//do_action( 'qm/info',$widgets);
 	}
 }

@@ -12,6 +12,9 @@ class Settings {
 	protected Utils $utils;
 
 
+	protected array $widgets;
+
+
 	public function __construct( $wposa, $utils ) {
 
 		$this->wposa = $wposa;
@@ -24,6 +27,7 @@ class Settings {
 	public function hooks() {
 
 		add_action( 'init', [ $this, 'fields' ], 110 );
+		add_action( 'widgets_init', [ $this, 'set_widgets' ], 99 );
 	}
 
 
@@ -251,24 +255,18 @@ class Settings {
 	}
 
 
+	public function set_widgets() {
+
+		global $wp_widget_factory;
+
+		$this->widgets = $wp_widget_factory->widgets;
+	}
+
+
 	/**
 	 * @return array[]
-	 * @todo при сохранении опции повисает страница, разобраться
 	 */
 	protected function get_option_widgets(): array {
-
-		$option_name = $this->utils->get_plugin_prefix() . '_admin_register_widgets';
-
-		if ( empty( $this->wposa::get( 'cleanup_widgets', 'admin' ) ) ) {
-
-			global $wp_widget_factory;
-
-			$widgets = $wp_widget_factory->widgets;
-
-			add_option( $option_name, $widgets, '', false );
-		} else {
-			$widgets = get_option( $option_name );
-		}
 
 		$widgets_check = [
 			'select_all' => [
@@ -280,7 +278,8 @@ class Settings {
 			],
 		];
 
-		foreach ( $widgets as $key => $widget ) {
+		foreach ( $this->widgets as $key => $widget ) {
+
 			$widgets_check[ $key ] = [
 				'label'      => $widget->name,
 				'class'      => 'checkbox-' . $widget->option_name,

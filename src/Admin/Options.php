@@ -1080,6 +1080,11 @@ class Options {
 			</div>
 		</div>
 		<?php
+		printf(
+			'<div class="wrap" id="%s-settings">%s</div>',
+			$this->utils->get_plugin_slug(),
+			esc_html__( 'Loading…', 'unadorned-announcement-bar' )
+		);
 	}
 
 
@@ -1518,8 +1523,13 @@ class Options {
 			}
 
 			.wposa-form-table__row_type_multicheck fieldset{
-				display:grid;
-				grid-template-columns: repeat(2, 1fr);
+				column-count: 2;
+				column-gap: 2rem;
+				display: block;
+			}
+
+			.wposa-form-table__row_type_multicheck fieldset label{
+				display: block !important;
 			}
 
 			/*.wposa__form {
