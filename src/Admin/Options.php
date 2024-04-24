@@ -1523,13 +1523,14 @@ class Options {
 			}
 
 			.wposa-form-table__row_type_multicheck fieldset{
-				column-count: 2;
+				column-count: 4;
 				column-gap: 2rem;
 				display: block;
 			}
 
 			.wposa-form-table__row_type_multicheck fieldset label{
 				display: block !important;
+				line-height: 1.8 !important;
 			}
 
 			/*.wposa__form {
