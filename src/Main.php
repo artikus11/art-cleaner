@@ -79,35 +79,23 @@ class Main {
 
 	public function init_condition_classes() {
 
-		if ( is_admin() && 'yes' === Options::get( 'disable_aggressive_updates', 'general' ) ) {
-			( new Disable_Aggressive_Updates() )->init_hooks();
-		}
+		$data = [
+			'disable_aggressive_updates',
+			'disable_emoji',
+			'disable_feed',
+			'disable_embeds',
+			'cleanup_head',
+			'cleanup_dashboard',
+			'cleanup_admin_bar',
+			'cleanup_widgets',
+		];
 
-		if ( 'yes' === Options::get( 'disable_emoji', 'general' ) ) {
-			( new Disable_Emoji() )->init_hooks();
+		foreach ( $data as $value ) {
+			if ( is_callable( [ $this, 'set_' . $value ] ) ) {
+				$method = 'set_' . $value;
+				$this->$method();
+			}
 		}
-
-		if ( 'yes' === Options::get( 'disable_feed', 'general' ) ) {
-			( new Disable_Feed() )->init_hooks();
-		}
-
-		if ( 'yes' === Options::get( 'disable_embeds', 'general' ) ) {
-			( new Disable_Embeds() )->init_hooks();
-		}
-
-		if ( ! is_admin() ) {
-			( new Cleanup_Head() )->init_hooks();
-		}
-
-		if ( is_admin() && 'yes' === Options::get( 'cleanup_dashboard', 'admin' ) ) {
-			( new Cleanup_Dashboard() )->init_hooks();
-		}
-
-		if ( 'yes' === Options::get( 'cleanup_admin_bar', 'admin' ) ) {
-			( new Cleanup_Bar() )->init_hooks();
-		}
-
-		( new Cleanup_Widgets() )->init_hooks();
 	}
 
 
@@ -167,5 +155,93 @@ class Main {
 	protected function is_cli(): bool {
 
 		return defined( 'WP_CLI' ) && constant( 'WP_CLI' );
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_disable_aggressive_updates(): void {
+
+		if ( is_admin() && 'yes' === Options::get( 'disable_aggressive_updates', 'general' ) ) {
+			( new Disable_Aggressive_Updates() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_disable_emoji(): void {
+
+		if ( 'yes' === Options::get( 'disable_emoji', 'general' ) ) {
+			( new Disable_Emoji() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_disable_feed(): void {
+
+		if ( 'yes' === Options::get( 'disable_feed', 'general' ) ) {
+			( new Disable_Feed() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_disable_embeds(): void {
+
+		if ( 'yes' === Options::get( 'disable_embeds', 'general' ) ) {
+			( new Disable_Embeds() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_cleanup_head(): void {
+
+		if ( ! is_admin() ) {
+			( new Cleanup_Head() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_cleanup_dashboard(): void {
+
+		if ( is_admin() && 'yes' === Options::get( 'cleanup_dashboard', 'admin' ) ) {
+			( new Cleanup_Dashboard() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_cleanup_admin_bar(): void {
+
+		if ( 'yes' === Options::get( 'cleanup_admin_bar', 'admin' ) ) {
+			( new Cleanup_Bar() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_cleanup_widgets(): void {
+
+		if ( is_admin() ) {
+			( new Cleanup_Widgets() )->init_hooks();
+		}
 	}
 }

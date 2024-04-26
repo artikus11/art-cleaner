@@ -1080,11 +1080,7 @@ class Options {
 			</div>
 		</div>
 		<?php
-		printf(
-			'<div class="wrap" id="%s-settings">%s</div>',
-			$this->utils->get_plugin_slug(),
-			esc_html__( 'Loading…', 'unadorned-announcement-bar' )
-		);
+
 	}
 
 
