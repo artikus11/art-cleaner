@@ -1519,7 +1519,7 @@ class Options {
 			}
 
 			.wposa-form-table__row_type_multicheck fieldset{
-				column-count: 4;
+				column-count: 3;
 				column-gap: 2rem;
 				display: block;
 			}
