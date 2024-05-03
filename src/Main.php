@@ -12,6 +12,7 @@ use Art\Cleaner\Cleanup_Core\Disable_Aggressive_Updates;
 use Art\Cleaner\Cleanup_Core\Disable_Embeds;
 use Art\Cleaner\Cleanup_Core\Disable_Emoji;
 use Art\Cleaner\Cleanup_Core\Disable_Feed;
+use Art\Cleaner\Cleanup_Core\Disable_Xml_Rpc;
 use Art\Cleaner\Woocommerce\Disabled;
 use Art\Cleaner\Woocommerce\Tools;
 use Exception;
@@ -84,6 +85,7 @@ class Main {
 			'disable_emoji',
 			'disable_feed',
 			'disable_embeds',
+			'disable_xml_rpc',
 			'cleanup_head',
 			'cleanup_dashboard',
 			'cleanup_admin_bar',
@@ -198,6 +200,17 @@ class Main {
 
 		if ( 'yes' === Options::get( 'disable_embeds', 'general' ) ) {
 			( new Disable_Embeds() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_disable_xml_rpc(): void {
+
+		if ( 'yes' === Options::get( 'disable_xml', 'general' ) ) {
+			( new Disable_Xml_Rpc() )->init_hooks();
 		}
 	}
 
