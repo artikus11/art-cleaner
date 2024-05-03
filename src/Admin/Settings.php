@@ -119,6 +119,21 @@ class Settings {
 				'desc'    => 'Отключает возможность вставки ссылок с контенте с других сайтов',
 			]
 		);
+
+		$this->wposa->add_field(
+			'general',
+			[
+				'id'      => 'disable_xml',
+				'type'    => 'select',
+				'name'    => 'Отключение XML RPC',
+				'options' => [
+					'yes' => 'Да',
+					'no'  => 'Нет',
+				],
+				'default' => 'no',
+				'desc'    => 'Отключает XML RPC',
+			]
+		);
 	}
 
 
@@ -173,7 +188,7 @@ class Settings {
 				'name'    => 'Отключить виджеты',
 				'class'   => 'multicheck-inputs',
 				'options' => $this->get_option_widgets(),
-				'default' => $this->default_widgets(),
+				//'default' => $this->default_widgets(),
 				'desc'    => 'Удаление всех виджетов, кроме не выбранных. Выберите виджет который требуется отключить',
 			]
 		);
@@ -285,8 +300,10 @@ class Settings {
 
 		foreach ( $this->widgets as $key => $widget ) {
 
+			$is_active_widget = is_active_widget( false, false, $widget->id_base, true ) ? ' (активен)' : '';
+
 			$widgets_check[ $key ] = [
-				'label'      => $widget->name,
+				'label'      => $widget->name . $is_active_widget,
 				'class'      => 'checkbox-' . $widget->option_name,
 				'attributes' => [
 					'data-selectable' => 'remove',
