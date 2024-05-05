@@ -167,7 +167,7 @@ class Main {
 	 */
 	protected function set_disable_aggressive_updates(): void {
 
-		if ( is_admin() && 'yes' === Options::get( 'disable_aggressive_updates', 'general' ) ) {
+		if ( is_admin() && 'on' === Options::get( 'disable_aggressive_updates', 'general' ) ) {
 			( new Disable_Aggressive_Updates() )->init_hooks();
 		}
 	}
@@ -178,7 +178,7 @@ class Main {
 	 */
 	protected function set_disable_emoji(): void {
 
-		if ( 'yes' === Options::get( 'disable_emoji', 'general' ) ) {
+		if ( 'on' === Options::get( 'disable_emoji', 'general' ) ) {
 			( new Disable_Emoji() )->init_hooks();
 		}
 	}
@@ -189,7 +189,7 @@ class Main {
 	 */
 	protected function set_disable_feed(): void {
 
-		if ( 'yes' === Options::get( 'disable_feed', 'general' ) ) {
+		if ( 'on' === Options::get( 'disable_feed', 'general' ) ) {
 			( new Disable_Feed() )->init_hooks();
 		}
 	}
@@ -200,7 +200,7 @@ class Main {
 	 */
 	protected function set_disable_embeds(): void {
 
-		if ( 'yes' === Options::get( 'disable_embeds', 'general' ) ) {
+		if ( 'on' === Options::get( 'disable_embeds', 'general' ) ) {
 			( new Disable_Embeds() )->init_hooks();
 		}
 	}
@@ -211,7 +211,7 @@ class Main {
 	 */
 	protected function set_disable_xml_rpc(): void {
 
-		if ( 'yes' === Options::get( 'disable_xml', 'general' ) ) {
+		if ( 'on' === Options::get( 'disable_xml', 'general' ) ) {
 			( new Disable_Xml_Rpc() )->init_hooks();
 		}
 	}

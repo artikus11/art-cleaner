@@ -64,13 +64,9 @@ class Settings {
 			'general',
 			[
 				'id'      => 'disable_aggressive_updates',
-				'type'    => 'select',
+				'type'    => 'switch',
 				'name'    => 'Отключение агрессивных обновлений',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
+				'default' => 'off',
 				'desc'    => 'Проверки новых версий при генерации страницы PHP отправляет HTTP запрос, а точнее 3 запроса: ядро, темы, плагины. Если есть платные плагины, то на каждый плагин обычно еще один свой запрос. При HTTP запросе в PHP генерация страницы зависает пока каждый запрос не получит результат, а на каждый запрос уходит в среднем 0,3 - 1 секунда. Вот и получается, что страница виснет на 2-4 секунды. <a href="https://wp-kama.ru/id_8514/uskoryaem-adminku-wordpress-otklyuchaem-proverki-obnovlenij.html" target="_blank">Подробнее</a>',
 			]
 		);
@@ -79,13 +75,9 @@ class Settings {
 			'general',
 			[
 				'id'      => 'disable_emoji',
-				'type'    => 'select',
+				'type'    => 'switch',
 				'name'    => 'Отключение Emoji',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
+				'default' => 'off',
 				'desc'    => 'C версии 4.2. в wordPress появились эти самые Emoji - смайлики, эмоции. Если не используются на сайте, то можно выключить',
 			]
 		);
@@ -94,13 +86,9 @@ class Settings {
 			'general',
 			[
 				'id'      => 'disable_feed',
-				'type'    => 'select',
+				'type'    => 'switch',
 				'name'    => 'Отключение RSS Feed',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
+				'default' => 'off',
 				'desc'    => 'Отключает все каналы RSS/Atom/RDF на вашем сайте и ставит редирект со всех RSS-лент.',
 			]
 		);
@@ -109,13 +97,9 @@ class Settings {
 			'general',
 			[
 				'id'      => 'disable_embeds',
-				'type'    => 'select',
+				'type'    => 'switch',
 				'name'    => 'Отключение Embeds',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
+				'default' => 'off',
 				'desc'    => 'Отключает возможность вставки ссылок с контенте с других сайтов',
 			]
 		);
@@ -124,13 +108,9 @@ class Settings {
 			'general',
 			[
 				'id'      => 'disable_xml',
-				'type'    => 'select',
+				'type'    => 'switch',
 				'name'    => 'Отключение XML RPC',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
+				'default' => 'off',
 				'desc'    => 'Отключает XML RPC',
 			]
 		);
