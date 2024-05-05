@@ -244,7 +244,7 @@ class Main {
 	 */
 	protected function set_cleanup_dashboard(): void {
 
-		if ( is_admin() && 'yes' === Options::get( 'cleanup_dashboard', 'admin' ) ) {
+		if ( is_admin() && 'on' === Options::get( 'cleanup_dashboard', 'admin' ) ) {
 			( new Cleanup_Dashboard() )->init_hooks();
 		}
 	}
@@ -255,7 +255,7 @@ class Main {
 	 */
 	protected function set_cleanup_admin_bar(): void {
 
-		if ( 'yes' === Options::get( 'cleanup_admin_bar', 'admin' ) ) {
+		if ( 'on' === Options::get( 'cleanup_admin_bar', 'admin' ) ) {
 			( new Cleanup_Bar() )->init_hooks();
 		}
 	}

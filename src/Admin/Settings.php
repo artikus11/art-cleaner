@@ -145,13 +145,9 @@ class Settings {
 			'admin',
 			[
 				'id'      => 'cleanup_dashboard',
-				'type'    => 'select',
+				'type'    => 'switch',
 				'name'    => 'Отключить виджеты в консоли',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
+				'default' => 'off',
 				'desc'    => 'Удаление виджетов на странице Консоли. Совсем всех, независимо от установленных плагинов.',
 			]
 		);
@@ -160,13 +156,9 @@ class Settings {
 			'admin',
 			[
 				'id'      => 'cleanup_admin_bar',
-				'type'    => 'select',
+				'type'    => 'switch',
 				'name'    => 'Отключить элементы админбара',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
+				'default' => 'off',
 				'desc'    => 'Отключает элементы админбара вверху админки. Внимание! Отключаются все элементы, независимо от установленных плагинов, кроме разрешенных.',
 			]
 		);
@@ -179,7 +171,6 @@ class Settings {
 				'name'    => 'Отключить виджеты',
 				'class'   => 'multicheck-inputs',
 				'options' => $this->get_option_widgets(),
-				//'default' => $this->default_widgets(),
 				'desc'    => 'Удаление всех виджетов, кроме не выбранных. Выберите виджет который требуется отключить',
 			]
 		);
@@ -203,13 +194,9 @@ class Settings {
 			'head',
 			[
 				'id'      => 'cleanup_head_generator',
-				'type'    => 'select',
+				'type'    => 'switch',
 				'name'    => 'Отключение версии ядра',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
+				'default' => 'off',
 				'desc'    => 'Удаляет метатег вида <code>&lt;meta name="generator" content="WordPress 6.4.3" /&gt;</code> из секции <code>&lt;head&gt;</code>',
 			]
 		);
@@ -218,13 +205,9 @@ class Settings {
 			'head',
 			[
 				'id'      => 'cleanup_head_shortlink',
-				'type'    => 'select',
+				'type'    => 'switch',
 				'name'    => 'Отключение короткой ссылки',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
+				'default' => 'off',
 				'desc'    => 'Удаляет короткую ссылку вида <code>&lt;link rel="shortlink" href="https://site.loc/?p=51159" /&gt;</code> из секции <code>&lt;head&gt;</code>',
 			]
 		);
@@ -233,13 +216,9 @@ class Settings {
 			'head',
 			[
 				'id'      => 'cleanup_head_wp_json',
-				'type'    => 'select',
+				'type'    => 'switch',
 				'name'    => 'Отключение ссылок на REST API',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
+				'default' => 'off',
 				'desc'    => 'Удаляет ссылки вида <code>&lt;link rel="alternate" type="text/xml+oembed" href="https://site.loc/wp-json/oembed/..." &gt;</code> из секции <code>&lt;head&gt;</code>',
 			]
 		);
@@ -248,13 +227,9 @@ class Settings {
 			'head',
 			[
 				'id'      => 'cleanup_head_rsd_link',
-				'type'    => 'select',
+				'type'    => 'switch',
 				'name'    => 'Отключение RSD ссылки',
-				'options' => [
-					'yes' => 'Да',
-					'no'  => 'Нет',
-				],
-				'default' => 'no',
+				'default' => 'off',
 				'desc'    => 'Удаляет ссылки вида <code>&lt;link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://site.loc/xmlrpc.php?rsd" /&gt;</code> из секции <code>&lt;head&gt;</code>',
 			]
 		);

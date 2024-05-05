@@ -1463,6 +1463,7 @@ class Options {
 				border: 1px solid #D9DADC;
 				border-radius: 50px;
 				box-shadow: inset -20px 0 0 0 #ffffff;
+				margin-top: 6px;
 			}
 
 			input.wposa-field--switch:before {

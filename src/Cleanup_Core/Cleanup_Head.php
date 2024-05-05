@@ -15,19 +15,19 @@ class Cleanup_Head {
 
 	public function init_hooks(): void {
 
-		if ( 'yes' === Options::get( 'cleanup_head_generator', 'head' ) ) {
+		if ( 'on' === Options::get( 'cleanup_head_generator', 'head' ) ) {
 			$this->cleanup_generator();
 		}
 
-		if ( 'yes' === Options::get( 'cleanup_head_shortlink', 'head' ) ) {
+		if ( 'on' === Options::get( 'cleanup_head_shortlink', 'head' ) ) {
 			$this->cleanup_shortlink();
 		}
 
-		if ( 'yes' === Options::get( 'cleanup_head_wp_json', 'head' ) ) {
+		if ( 'on' === Options::get( 'cleanup_head_wp_json', 'head' ) ) {
 			$this->cleanup_wp_json();
 		}
 
-		if ( 'yes' === Options::get( 'cleanup_head_rsd_link', 'head' ) ) {
+		if ( 'on' === Options::get( 'cleanup_head_rsd_link', 'head' ) ) {
 			remove_action( 'wp_head', 'rsd_link' );
 		}
 	}
