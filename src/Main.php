@@ -4,6 +4,7 @@ namespace Art\Cleaner;
 
 use Art\Cleaner\Admin\Options;
 use Art\Cleaner\Admin\Settings;
+use Art\Cleaner\Cleanup_Core\Autoremove_Attachments;
 use Art\Cleaner\Cleanup_Core\Cleanup_Bar;
 use Art\Cleaner\Cleanup_Core\Cleanup_Dashboard;
 use Art\Cleaner\Cleanup_Core\Cleanup_Head;
@@ -86,6 +87,7 @@ class Main {
 			'disable_feed',
 			'disable_embeds',
 			'disable_xml_rpc',
+			'autoremove_attachments',
 			'cleanup_head',
 			'cleanup_dashboard',
 			'cleanup_admin_bar',
@@ -218,6 +220,17 @@ class Main {
 	/**
 	 * @return void
 	 */
+	protected function set_autoremove_attachments(): void {
+
+		if ( is_admin() && 'on' === Options::get( 'autoremove_attachments', 'general' ) ) {
+			( new Autoremove_Attachments() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
 	protected function set_cleanup_head(): void {
 
 		if ( ! is_admin() ) {
@@ -257,4 +270,5 @@ class Main {
 			( new Cleanup_Widgets() )->init_hooks();
 		}
 	}
+
 }
