@@ -3,6 +3,10 @@
 namespace Art\Cleaner;
 
 use Art\Cleaner\Admin\Options;
+use Art\Cleaner\Admin\Sections\Admin;
+use Art\Cleaner\Admin\Sections\General;
+use Art\Cleaner\Admin\Sections\Head;
+use Art\Cleaner\Admin\Sections\Plugins;
 use Art\Cleaner\Admin\Settings;
 use Art\Cleaner\Cleanup_Core\Autoremove_Attachments;
 use Art\Cleaner\Cleanup_Core\Cleanup_Bar;
@@ -54,7 +58,7 @@ class Main {
 	/**
 	 * @var \Art\Cleaner\Utils
 	 */
-	protected $utils;
+	protected Utils $utils;
 
 
 	public function init() {
@@ -73,9 +77,13 @@ class Main {
 
 	public function init_classes() {
 
-		$this->utils    = new Utils();
-		$this->wposa    = new Options( $this->utils );
-		$this->settings = new Settings( $this->wposa, $this->utils );
+		$this->utils = new Utils();
+		$this->wposa = new Options( $this->utils );
+
+		( new General( $this->wposa, $this->utils ) )->init_hooks();
+		( new Admin( $this->wposa, $this->utils ) )->init_hooks();
+		( new Head( $this->wposa, $this->utils ) )->init_hooks();
+		( new Plugins\Woocommerce( $this->wposa, $this->utils ) )->init_hooks();
 	}
 
 
@@ -100,6 +108,7 @@ class Main {
 				$this->$method();
 			}
 		}
+		//(new \Art\Cleaner\Cleanup_Plugins\Woocommerce\Disabled())->init_hooks();
 	}
 
 

@@ -636,13 +636,12 @@ class Options {
 		$type    = $args['type'] ?? 'text';
 		$content = $args['name'] ?? '';
 		$html    = sprintf(
-			'<h3 class="%1$s-headline" id="%1$s"/>%2$s</h3>',
+			'<h3 class="%1$s-headline" id="%1$s"/>%2$s<hr></h3>',
 			esc_attr( $type ),
 			$content
 		);
 
 		$html .= $this->get_field_description( $args );
-		$html .= '<hr>';
 
 		echo $html;
 	}
