@@ -100,6 +100,7 @@ class Main {
 			'cleanup_dashboard',
 			'cleanup_admin_bar',
 			'cleanup_widgets',
+			'disabled_woocommerce',
 		];
 
 		foreach ( $data as $value ) {
@@ -108,7 +109,6 @@ class Main {
 				$this->$method();
 			}
 		}
-		//(new \Art\Cleaner\Cleanup_Plugins\Woocommerce\Disabled())->init_hooks();
 	}
 
 
@@ -277,6 +277,17 @@ class Main {
 
 		if ( is_admin() ) {
 			( new Cleanup_Widgets() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_disabled_woocommerce(): void {
+
+		if ( is_admin() ) {
+			( new Cleanup_Plugins\Woocommerce\Disabled() )->init_hooks();
 		}
 	}
 
