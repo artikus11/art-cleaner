@@ -17,10 +17,6 @@ class Disabled {
 			add_action( 'admin_menu', [ $this, 'remove_admin_addon_submenu' ], 999 );
 		}
 
-		if ( 'on' === Options::get( 'woocommerce_disable_feature_analytics', 'plugins', 'off' ) ) {
-			add_filter( 'woocommerce_admin_get_feature_config', [ $this, 'disable_features_analytics' ], 1000, 1 );
-		}
-
 		add_action( 'admin_menu', [ $this, 'remove_admin_addon_submenu_conditionals' ], 999 );
 	}
 
@@ -87,17 +83,6 @@ class Disabled {
 			'launch-your-store'                    => false, // требуется для Site Visibility
 			'product-editor-template-system'       => false,
 		];
-	}
-
-
-	public function disable_features_analytics( $features ) {
-
-		$features['analytics'] = false;
-		if ( 'yes' === get_option( Analytics::TOGGLE_OPTION_NAME ) ) {
-			update_option( Analytics::TOGGLE_OPTION_NAME, 'no' );
-		}
-
-		return $features;
 	}
 
 

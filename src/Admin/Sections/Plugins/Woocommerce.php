@@ -8,6 +8,10 @@ class Woocommerce extends Plugins {
 
 	protected function fields(): void {
 
+		if ( empty( $this->is_active_plugins() ) ) {
+			return;
+		}
+
 		$this->wposa->add_field(
 			$this->section_id,
 			[
@@ -25,17 +29,6 @@ class Woocommerce extends Plugins {
 				'name'    => 'Отключить WooCommerce Admin',
 				'default' => 'off',
 				'desc'    => 'Будут отлючены все новые функции и разделы: Маркетинг, Аналитика, Бординг и тд относящиеся к WooCommerce Admin',
-			]
-		);
-
-		$this->wposa->add_field(
-			$this->section_id,
-			[
-				'id'      => 'woocommerce_disable_feature_analytics',
-				'type'    => 'switch',
-				'name'    => 'Отключить Аналитику',
-				'default' => 'off',
-				'desc'    => 'Будет отключен только раздел Аналитики',
 			]
 		);
 
