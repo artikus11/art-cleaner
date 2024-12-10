@@ -15,6 +15,7 @@ class Cleanup_Dashboard {
 		add_action( 'admin_init', [ $this, 'init' ], PHP_INT_MAX );
 
 		add_action( 'wp_dashboard_setup', [ $this, 'dashboard' ], PHP_INT_MAX );
+		add_action( 'wp_network_dashboard_setup', [ $this, 'dashboard_network' ], PHP_INT_MAX );
 	}
 
 
@@ -37,6 +38,14 @@ class Cleanup_Dashboard {
 		global $wp_meta_boxes;
 
 		unset( $wp_meta_boxes['dashboard'] );
+	}
+
+
+	public function dashboard_network() {
+
+		global $wp_meta_boxes;
+
+		unset( $wp_meta_boxes['dashboard-network'] );
 	}
 
 
