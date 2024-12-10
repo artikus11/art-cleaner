@@ -2,6 +2,7 @@
 
 namespace Art\Cleaner\Admin\Sections;
 
+use Art\Cleaner\Admin\Options;
 use Art\Cleaner\Admin\Settings;
 
 class Admin extends Settings {
@@ -52,6 +53,19 @@ class Admin extends Settings {
 				'desc'    => 'Отключает элементы админбара вверху админки. Внимание! Отключаются все элементы, независимо от установленных плагинов, кроме разрешенных.',
 			]
 		);
+
+		if ( 'on' !== Options::get( 'disable_comments', 'general' ) ) {
+			$this->wposa->add_field(
+				$this->section_id,
+				[
+					'id'      => 'cleanup_count_comments',
+					'type'    => 'switch',
+					'name'    => 'Отключить пересчет количества комментариев',
+					'default' => 'off',
+					'desc'    => 'Отключает пересчет количества комментариев.',
+				]
+			);
+		}
 
 		if ( ! wp_use_widgets_block_editor() ) {
 			$this->wposa->add_field(

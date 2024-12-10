@@ -10,6 +10,7 @@ use Art\Cleaner\Admin\Sections\Plugins;
 use Art\Cleaner\Admin\Settings;
 use Art\Cleaner\Cleanup_Core\Autoremove_Attachments;
 use Art\Cleaner\Cleanup_Core\Cleanup_Bar;
+use Art\Cleaner\Cleanup_Core\Cleanup_Common;
 use Art\Cleaner\Cleanup_Core\Cleanup_Dashboard;
 use Art\Cleaner\Cleanup_Core\Cleanup_Head;
 use Art\Cleaner\Cleanup_Core\Cleanup_Widgets;
@@ -98,11 +99,12 @@ class Main {
 			'disable_xml_rpc',
 			'disable_comments',
 			'autoremove_attachments',
+			'disabled_woocommerce',
 			'cleanup_head',
 			'cleanup_dashboard',
 			'cleanup_admin_bar',
 			'cleanup_widgets',
-			'disabled_woocommerce',
+			'cleanup_common',
 		];
 
 		foreach ( $data as $value ) {
@@ -290,6 +292,17 @@ class Main {
 
 		if ( is_admin() ) {
 			( new Cleanup_Widgets() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_cleanup_common(): void {
+
+		if ( is_admin() ) {
+			( new Cleanup_Common() )->init_hooks();
 		}
 	}
 
