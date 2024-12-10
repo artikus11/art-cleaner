@@ -14,6 +14,7 @@ use Art\Cleaner\Cleanup_Core\Cleanup_Dashboard;
 use Art\Cleaner\Cleanup_Core\Cleanup_Head;
 use Art\Cleaner\Cleanup_Core\Cleanup_Widgets;
 use Art\Cleaner\Cleanup_Core\Disable_Aggressive_Updates;
+use Art\Cleaner\Cleanup_Core\Disable_Comments;
 use Art\Cleaner\Cleanup_Core\Disable_Embeds;
 use Art\Cleaner\Cleanup_Core\Disable_Emoji;
 use Art\Cleaner\Cleanup_Core\Disable_Feed;
@@ -95,6 +96,7 @@ class Main {
 			'disable_feed',
 			'disable_embeds',
 			'disable_xml_rpc',
+			'disable_comments',
 			'autoremove_attachments',
 			'cleanup_head',
 			'cleanup_dashboard',
@@ -222,6 +224,17 @@ class Main {
 
 		if ( 'on' === Options::get( 'disable_xml', 'general' ) ) {
 			( new Disable_Xml_Rpc() )->init_hooks();
+		}
+	}
+
+
+	/**
+	 * @return void
+	 */
+	protected function set_disable_comments(): void {
+
+		if ( 'on' === Options::get( 'disable_comments', 'general' ) ) {
+			( new Disable_Comments() )->init_hooks();
 		}
 	}
 

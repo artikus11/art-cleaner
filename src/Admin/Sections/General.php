@@ -89,6 +89,17 @@ class General extends Settings {
 		$this->wposa->add_field(
 			$this->section_id,
 			[
+				'id'      => 'disable_comments',
+				'type'    => 'switch',
+				'name'    => 'Отключение комментариев',
+				'default' => 'off',
+				'desc'    => '<strong>Вниманние! </strong>Полностью отключает камментарии на сайте, в том числе и отзывы Woocommerce, если они активны',
+			]
+		);
+
+		$this->wposa->add_field(
+			$this->section_id,
+			[
 				'id'      => 'autoremove_attachments',
 				'type'    => 'switch',
 				'name'    => 'Автоматическое удаление вложений',
