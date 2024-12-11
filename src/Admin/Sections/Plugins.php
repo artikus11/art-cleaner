@@ -9,18 +9,25 @@ class Plugins extends Settings {
 	protected string $section_id = 'plugins';
 
 
+	private static bool $section_called = false;
+
+
 	/**
 	 * @return void
 	 */
 	public function section(): void {
 
-		$this->wposa->add_section(
-			[
-				'id'        => $this->section_id,
-				'title'     => '',
-				'title_nav' => 'Плагины',
-			]
-		);
+		if ( ! self::$section_called ) {
+			self::$section_called = true;
+
+			$this->wposa->add_section(
+				[
+					'id'        => $this->section_id,
+					'title'     => '',
+					'title_nav' => 'Плагины',
+				]
+			);
+		}
 
 		if ( ! empty( $this->is_active_plugins() ) ) {
 			$this->fields();

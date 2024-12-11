@@ -108,10 +108,20 @@ class Settings {
 
 
 	/**
-	 * @return array|string[]
+	 * @return bool
 	 */
-	protected function is_active_plugins(): array {
+	protected function is_active_plugins(): bool {
 
-		return array_intersect( $this->support_plugins, (array) get_option( 'active_plugins', [] ) );
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		}
+
+		foreach ( $this->support_plugins as $plugin ) {
+			if ( is_plugin_active( $plugin ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

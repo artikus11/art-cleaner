@@ -20,8 +20,9 @@ use Art\Cleaner\Cleanup_Core\Disable_Embeds;
 use Art\Cleaner\Cleanup_Core\Disable_Emoji;
 use Art\Cleaner\Cleanup_Core\Disable_Feed;
 use Art\Cleaner\Cleanup_Core\Disable_Xml_Rpc;
-use Art\Cleaner\Woocommerce\Disabled;
-use Art\Cleaner\Woocommerce\Tools;
+
+//use Art\Cleaner\Woocommerce\Disabled;
+//use Art\Cleaner\Woocommerce\Tools;
 use Exception;
 use WP_CLI;
 
@@ -77,7 +78,7 @@ class Main {
 	}
 
 
-	public function init_classes() {
+	public function init_classes(): void {
 
 		$this->utils = new Utils();
 		$this->wposa = new Options( $this->utils );
@@ -86,10 +87,11 @@ class Main {
 		( new Admin( $this->wposa, $this->utils ) )->init_hooks();
 		( new Head( $this->wposa, $this->utils ) )->init_hooks();
 		( new Plugins\Woocommerce( $this->wposa, $this->utils ) )->init_hooks();
+		( new Plugins\RankMath( $this->wposa, $this->utils ) )->init_hooks();
 	}
 
 
-	public function init_condition_classes() {
+	public function init_condition_classes(): void {
 
 		$data = [
 			'disable_aggressive_updates',

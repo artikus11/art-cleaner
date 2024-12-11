@@ -8,7 +8,7 @@ class Woocommerce extends Plugins {
 
 	protected function fields(): void {
 
-		if ( empty( $this->is_active_plugins() ) ) {
+		if ( ! is_plugin_active( 'woocommerce/woocommerce.php' ) ) {
 			return;
 		}
 
