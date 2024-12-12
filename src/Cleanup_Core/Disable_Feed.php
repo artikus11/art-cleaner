@@ -36,12 +36,12 @@ class Disable_Feed {
 	}
 
 
-	private function redirect_feed() {
+	protected function redirect_feed() {
 
 		global $wp_rewrite, $wp_query;
 
-		if ( isset( $_GET['feed'] ) ) {
-			wp_redirect( esc_url_raw( remove_query_arg( 'feed' ) ), 301 );
+		if ( isset( $_GET['feed'] ) ) { //phpcs:ignore WordPress.Security.NonceVerification
+			wp_safe_redirect( esc_url_raw( remove_query_arg( 'feed' ) ), 301 );
 			exit;
 		}
 
@@ -54,22 +54,34 @@ class Disable_Feed {
 		redirect_canonical();
 
 		// Still here? redirect_canonical failed to redirect, probably because of a filter. Try the hard way.
-		$struct        = ( ! is_singular() && is_comment_feed() ) ? $wp_rewrite->get_comment_feed_permastruct() : $wp_rewrite->get_feed_permastruct();
-		$struct        = preg_quote( $struct, '#' );
-		$struct        = str_replace( '%feed%', '(\w+)?', $struct );
-		$struct        = preg_replace( '#/+#', '/', $struct );
-		$requested_url = ( is_ssl() ? 'https://' : 'http://' ) . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-		$new_url       = preg_replace( '#' . $struct . '/?$#', '', $requested_url );
+		$struct = ( ! is_singular() && is_comment_feed() ) ? $wp_rewrite->get_comment_feed_permastruct() : $wp_rewrite->get_feed_permastruct();
+		$struct = preg_quote( $struct, '#' );
+		$struct = str_replace( '%feed%', '(\w+)?', $struct );
+		$struct = preg_replace( '#/+#', '/', $struct );
+
+		$requested_url = sprintf( '%s%s%s',
+			is_ssl() ? 'https://' : 'http://',
+			! empty( $_SERVER['HTTP_HOST'] ) ? esc_url_raw( wp_unslash( $_SERVER['HTTP_HOST'] ) ) : '',
+			! empty( $_SERVER['REQUEST_URI'] ) ? esc_url_raw( wp_unslash( $_SERVER['REQUEST_URI'] ) ) : ''
+		);
+
+		$new_url = preg_replace( '#' . $struct . '/?$#', '', $requested_url );
 
 		if ( $new_url !== $requested_url ) {
-			wp_redirect( $new_url, 301 );
+			wp_safe_redirect( $new_url, 301 );
 			exit;
 		}
 	}
 
 
-	//BBPress feed detection sourced from bbp_request_feed_trap() in BBPress Core.
-	function filter_bbp_feeds( $query_vars ) {
+	/**
+	 * BBPress feed detection sourced from bbp_request_feed_trap() in BBPress Core.
+	 *
+	 * @param  array $query_vars
+	 *
+	 * @return array
+	 */
+	public function filter_bbp_feeds( $query_vars ) {
 
 		// Looking at a feed
 		if ( isset( $query_vars['feed'] ) ) {

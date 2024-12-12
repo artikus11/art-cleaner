@@ -185,7 +185,7 @@ class Options {
 		add_action( 'admin_init', [ $this, 'admin_init' ] );
 
 		// Menu.
-		add_action( 'admin_menu', [ $this, 'admin_menu' ], - PHP_INT_MAX);
+		add_action( 'admin_menu', [ $this, 'admin_menu' ], 1 );
 	}
 
 
@@ -341,8 +341,8 @@ class Options {
 
 		if ( count( $args ) ) {
 			foreach ( $args as $attr_key => $attr_value ) {
-				if ( $attr_value === true || $attr_value === false ) {
-					if ( $attr_value === true ) {
+				if ( true === $attr_value || false === $attr_value ) {
+					if ( true === $attr_value ) {
 						$result[] = esc_attr( $attr_key );
 					}
 				} else {
@@ -482,7 +482,7 @@ class Options {
 				$sanitize_callback = $field['sanitize_callback'] ?? '';
 
 				$help_tab = $field['help_tab'] ?? '';
-				$class = ! empty( $field['class'] )
+				$class    = ! empty( $field['class'] )
 					? "wposa-form-table__row wposa-form-table__row_type_{$type} wposa-form-table__row_{$section}_{$id} {$field['class']}" :
 					"wposa-form-table__row wposa-form-table__row_type_{$type} wposa-form-table__row_{$section}_{$id}";
 
@@ -508,7 +508,6 @@ class Options {
 					$name .= $this->show_help_tab_toggle( $help_tab );
 				}
 
-				// @param string 	$id
 				$field_id = $section . '[' . $field['id'] . ']';
 
 				/**
@@ -547,7 +546,6 @@ class Options {
 			 */
 			register_setting( $section['id'], $section['id'], [ $this, 'sanitize_fields' ] );
 		} // foreach ended.
-
 	} // admin_init() ended.
 
 
@@ -580,7 +578,7 @@ class Options {
 	 * @return mixed string | bool false
 	 * @since  1.0.0
 	 */
-	function get_sanitize_callback( $slug = '' ) {
+	public function get_sanitize_callback( $slug = '' ) {
 
 		if ( empty( $slug ) ) {
 			return false;
@@ -589,7 +587,7 @@ class Options {
 		// Iterate over registered fields and see if we can find proper callback.
 		foreach ( $this->fields_array as $section => $field_array ) {
 			foreach ( $field_array as $field ) {
-				if ( $field['name'] != $slug ) {
+				if ( $field['name'] !== $slug ) {
 					continue;
 				}
 
@@ -643,7 +641,7 @@ class Options {
 
 		$html .= $this->get_field_description( $args );
 
-		echo $html;
+		echo $html; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 
@@ -710,8 +708,12 @@ class Options {
 		$html  = '<fieldset>';
 		$html  .= sprintf( '<label for="wposa-%1$s[%2$s]">', $args['section'], $args['id'] );
 		$html  .= sprintf( '<input type="hidden" name="%1$s[%2$s]" value="off" />', $args['section'], $args['id'] );
-		$html  .= sprintf( '<input type="checkbox" class="checkbox" id="wposa-%1$s[%2$s]" name="%1$s[%2$s]" value="on" %3$s />', $args['section'], $args['id'],
-			checked( $value, 'on', false ) );
+		$html  .= sprintf(
+			'<input type="checkbox" class="checkbox" id="wposa-%1$s[%2$s]" name="%1$s[%2$s]" value="on" %3$s />',
+			$args['section'],
+			$args['id'],
+			checked( $value, 'on', false )
+		);
 		$html  .= sprintf( '%1$s</label>', $args['desc'] );
 		$html  .= '</fieldset>';
 
@@ -729,16 +731,16 @@ class Options {
 		$value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'] ) );
 		$html  = '<fieldset>';
 
-		$html  .= sprintf( '<label for="wposa-%1$s[%2$s]">', $args['section'], $args['id'] );
-		$html  .= sprintf( '<input type="hidden" name="%1$s[%2$s]" value="off" />', $args['section'], $args['id'] );
-		$html  .= sprintf( '<input type="checkbox" class="wposa-field wposa-field--switch" id="wposa-%1$s[%2$s]" name="%1$s[%2$s]" value="on" %3$s />', $args['section'],
+		$html .= sprintf( '<label for="wposa-%1$s[%2$s]">', $args['section'], $args['id'] );
+		$html .= sprintf( '<input type="hidden" name="%1$s[%2$s]" value="off" />', $args['section'], $args['id'] );
+		$html .= sprintf( '<input type="checkbox" class="wposa-field wposa-field--switch" id="wposa-%1$s[%2$s]" name="%1$s[%2$s]" value="on" %3$s />', $args['section'],
 			$args['id'],
 			checked( $value, 'on', false )
 		);
 
-		$html  .= sprintf( '%1$s</label>', $this->get_field_description( $args  ));
+		$html .= sprintf( '%1$s</label>', $this->get_field_description( $args ) );
 
-		$html  .= '</fieldset>';
+		$html .= '</fieldset>';
 
 		echo wp_kses( $html, self::ALLOWED_HTML );
 	}
@@ -784,7 +786,7 @@ class Options {
 
 		$html .= $this->get_field_description( $args );
 
-		echo $html;
+		echo $html; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 
@@ -800,8 +802,12 @@ class Options {
 		$html = '<fieldset>';
 		foreach ( $args['options'] as $key => $label ) {
 			$html .= sprintf( '<label for="wposa-%1$s[%2$s][%3$s]">', $args['section'], $args['id'], $key );
-			$html .= sprintf( '<input type="radio" class="radio" id="wposa-%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s" %4$s />', $args['section'], $args['id'], $key,
-				checked( $value, $key, false ) );
+			$html .= sprintf(
+				'<input type="radio" class="radio" id="wposa-%1$s[%2$s][%3$s]" name="%1$s[%2$s]" value="%3$s" %4$s />',
+				$args['section'],
+				$args['id'], $key,
+				checked( $value, $key, false )
+			);
 			$html .= sprintf( '%1$s</label><br>', $label );
 		}
 		$html .= $this->get_field_description( $args );
@@ -928,8 +934,22 @@ class Options {
 		$value = esc_attr( $this->get_option( $args['id'], $args['section'], $args['std'], $args['placeholder'] ) );
 		$size  = $args['size'] ?? 'regular';
 
-		$html = sprintf( '<input type="text" class="%1$s-text color-picker" id="%2$s[%3$s]" name="%2$s[%3$s]" value="%4$s" data-default-color="%5$s" placeholder="%6$s" />', $size,
-			$args['section'], $args['id'], $value, $args['std'], $args['placeholder'] );
+		$html = sprintf(
+			'<input 
+			type="text"
+			class="%1$s-text color-picker" 
+			id="%2$s[%3$s]"
+			name="%2$s[%3$s]"
+			value="%4$s"
+			data-default-color="%5$s"
+			placeholder="%6$s" />',
+			$size,
+			$args['section'],
+			$args['id'],
+			$value,
+			$args['std'],
+			$args['placeholder']
+		);
 		$html .= $this->get_field_description( $args );
 
 		echo wp_kses( $html, self::ALLOWED_HTML );
@@ -941,7 +961,7 @@ class Options {
 	 *
 	 * @param  array $args settings field args.
 	 */
-	public function callback_separator( $args ) {
+	public function callback_separator( $args ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter
 
 		?>
 		<div class="wposa-field wposa-field--separator"></div>
@@ -991,13 +1011,13 @@ class Options {
 	/**
 	 * Get the value of a settings field
 	 *
-	 * @param  string $option  settings field name.
-	 * @param  string $section the section name this field belongs to.
-	 * @param  string $default default text if it's not found.
+	 * @param  string $option        settings field name.
+	 * @param  string $section       the section name this field belongs to.
+	 * @param  string $default_state default text if it's not found.
 	 *
 	 * @return string
 	 */
-	function get_option( $option, $section, $default = '' ) {
+	public function get_option( $option, $section, $default_state = '' ) {
 
 		$options = get_option( $section );
 
@@ -1005,20 +1025,20 @@ class Options {
 			return $options[ $option ];
 		}
 
-		return $default;
+		return $default_state;
 	}
 
 
 	/**
 	 * Get the value of a settings field
 	 *
-	 * @param  string $option  Settings field name.
-	 * @param  string $section The section name this field belongs to.
-	 * @param  mixed  $default Default text if it's not found.
+	 * @param  string $option        Settings field name.
+	 * @param  string $section       The section name this field belongs to.
+	 * @param  mixed  $default_state Default text if it's not found.
 	 *
 	 * @return mixed
 	 */
-	public static function get( string $option, string $section, $default = '' ) {
+	public static function get( string $option, string $section, $default_state = '' ) {
 
 		$options = get_option( Utils::get_plugin_prefix() . '_' . $section );
 
@@ -1026,7 +1046,7 @@ class Options {
 			return $options[ $option ];
 		}
 
-		return $default;
+		return $default_state;
 	}
 
 
@@ -1084,7 +1104,6 @@ class Options {
 			</div>
 		</div>
 		<?php
-
 	}
 
 
@@ -1101,12 +1120,19 @@ class Options {
 		);
 
 		foreach ( $this->sections_array as $tab ) {
-			if ( isset( $tab['disabled'] ) && $tab['disabled'] === true ) {
+			if ( isset( $tab['disabled'] ) && true === $tab['disabled'] ) {
 				if ( isset( $tab['badge'] ) ) {
-					$html .= sprintf( '<span class="nav-tab wposa-nav-tab wposa-nav-tab--disabled" id="%1$s-tab">%2$s <span class="wposa-badge">%3$s</span></span>', $tab['id'],
-						$tab['title'], $tab['badge'] );
+					$html .= sprintf(
+						'<span class="nav-tab wposa-nav-tab wposa-nav-tab--disabled" id="%1$s-tab">%2$s <span class="wposa-badge">%3$s</span></span>',
+						$tab['id'],
+						$tab['title'], $tab['badge']
+					);
 				} else {
-					$html .= sprintf( '<span class="nav-tab wposa-nav-tab wposa-nav-tab--disabled" id="%1$s-tab">%2$s</span>', $tab['id'], $tab['title'] );
+					$html .= sprintf(
+						'<span class="nav-tab wposa-nav-tab wposa-nav-tab--disabled" id="%1$s-tab">%2$s</span>',
+						$tab['id'],
+						$tab['title']
+					);
 				}
 			} else {
 				$html .= sprintf( '<a href="#%1$s" class="nav-tab" id="%1$s-tab">%2$s</a>', $tab['id'], $tab['title_nav'] );
@@ -1167,7 +1193,7 @@ class Options {
 	}
 
 
-	function do_settings_sections( $page ) {
+	public function do_settings_sections( $page ) {
 
 		global $wp_settings_sections, $wp_settings_fields;
 
@@ -1185,7 +1211,7 @@ class Options {
 			}
 
 			if ( $section['title'] ) {
-				echo "<h2>{$section['title']}</h2>\n";
+				echo "<h2>{$section['title']}</h2>\n"; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			}
 
 			if ( $section['callback'] ) {
@@ -1206,7 +1232,7 @@ class Options {
 	}
 
 
-	function do_settings_fields( $page, $section ) {
+	public function do_settings_fields( $page, $section ) {
 
 		global $wp_settings_fields;
 
@@ -1223,18 +1249,21 @@ class Options {
 
 			$type_title = ! empty( $field['args']['type'] ) && 'title' === $field['args']['type'];
 
-			echo "<tr$class >";
+			echo "<tr$class >"; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 			if ( $type_title ) {
 				echo '<td colspan="2" style="padding-left: 0;">';
 			} else {
 
 				if ( ! empty( $field['args']['label_for'] ) ) {
-					echo sprintf( '<th scope="row"><label for="%s">%s</label></th>',
-						esc_attr( $field['args']['label_for'] ),
-						$field['title'] );
+					printf(
+						'<th scope="row"><label for="%s">%s</label></th>',
+						esc_attr( $field['args']['label_for']
+						),
+						esc_html( $field['title'] )
+					);
 				} else {
-					echo sprintf( '<th scope="row">%s</th>', $field['title'] );
+					printf( '<th scope="row">%s</th>', esc_html( $field['title'] ) );
 				}
 
 				echo '<td>';
@@ -1392,17 +1421,17 @@ class Options {
 					.change();
 
 
-				$('[data-select-all]').click(function () {
+				$( '[data-select-all]' ).click( function () {
 
-					var checkbox = $(this);
+					var checkbox = $( this );
 
-					var checked = checkbox.prop('checked');
+					var checked = checkbox.prop( 'checked' );
 
-					var name = $(this).data('select-all');
-					$('[data-selectable="' + name + '"]').each(function () {
-						$(this).prop('checked', checked);
-					})
-				})
+					var name = $( this ).data( 'select-all' );
+					$( '[data-selectable="' + name + '"]' ).each( function () {
+						$( this ).prop( 'checked', checked );
+					} )
+				} )
 			} );
 
 		</script>
@@ -1523,13 +1552,13 @@ class Options {
 				width: 50px;
 			}
 
-			.wposa-form-table__row_type_multicheck fieldset{
+			.wposa-form-table__row_type_multicheck fieldset {
 				column-count: 3;
 				column-gap: 2rem;
 				display: block;
 			}
 
-			.wposa-form-table__row_type_multicheck fieldset label{
+			.wposa-form-table__row_type_multicheck fieldset label {
 				display: block !important;
 				line-height: 1.8 !important;
 			}

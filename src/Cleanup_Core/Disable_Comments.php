@@ -55,7 +55,7 @@ class Disable_Comments {
 			add_action( 'admin_print_styles-profile.php', [ $this, 'admin_css' ] );
 			add_action( 'wp_dashboard_setup', [ $this, 'filter_dashboard' ] );
 			add_filter( 'pre_option_default_pingback_flag', '__return_zero' );
-		} else {// Filters for front end only
+		} else { // Filters for front end only
 			add_action( 'template_redirect', [ $this, 'check_comment_template' ] );
 			add_filter( 'comments_open', '__return_false', 20 );
 			add_filter( 'pings_open', '__return_false', 20 );
@@ -170,7 +170,7 @@ class Disable_Comments {
 	}
 
 
-	public function filter_gutenberg_blocks( $hook ): void {
+	public function filter_gutenberg_blocks(): void {
 
 		add_action( 'admin_footer', [ $this, 'print_footer_scripts' ] );
 	}
@@ -235,9 +235,8 @@ class Disable_Comments {
 	}
 
 
-	public function disable_rest_api_comments( $prepared_comment, $request ): WP_Error {
+	public function disable_rest_api_comments(): WP_Error {
 
 		return new WP_Error( 'rest_comment_disabled', 'Commenting is disabled.', [ 'status' => 403 ] );
 	}
-
 }

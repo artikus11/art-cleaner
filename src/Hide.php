@@ -15,11 +15,8 @@ class Hide {
 
 	public function init_hooks() {
 
-
 		add_filter( 'wp_count_comments', [ $this, 'count_comments_empty' ] );
 		add_filter( 'intermediate_image_sizes', [ $this, 'delete_intermediate_image_sizes' ] );
-
-
 	}
 
 
@@ -34,7 +31,7 @@ class Hide {
 		return array_diff( $sizes, [
 			'medium_large',
 			'1536x1536',
-			'2048x2048'
+			'2048x2048',
 		] );
 	}
 
@@ -55,10 +52,4 @@ class Hide {
 			'all'                 => 0,
 		];
 	}
-
-
-
-
-
-
 }

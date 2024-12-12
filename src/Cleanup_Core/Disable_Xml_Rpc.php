@@ -32,7 +32,7 @@ class Disable_Xml_Rpc {
 	}
 
 
-	public function remove_x_pingback_headers( $headers ) {
+	public function remove_x_pingback_headers() {
 
 		if ( function_exists( 'header_remove' ) ) {
 			header_remove( 'X-Pingback' );
@@ -51,5 +51,4 @@ class Disable_Xml_Rpc {
 
 		return $headers;
 	}
-
 }

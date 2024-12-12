@@ -21,8 +21,7 @@ class Cleanup_Common {
 	}
 
 
-	public function count_comments_empty( $c ): object {
-
+	public function count_comments_empty(): object {
 
 		return (object) [
 			'approved'            => 0,

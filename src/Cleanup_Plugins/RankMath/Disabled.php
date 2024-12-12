@@ -72,7 +72,7 @@ class Disabled {
 		// add_filter( 'rank_math/analytics/hide_email_report_options', '__return_true' );
 
 		// Change the Rank Math Meta Box Priority
-		add_filter( 'rank_math/metabox/priority', static function ( $priority ) {
+		add_filter( 'rank_math/metabox/priority', static function () {
 
 			return 'low';
 		} );

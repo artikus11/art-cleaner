@@ -20,9 +20,9 @@ use Art\Cleaner\Cleanup_Core\Disable_Embeds;
 use Art\Cleaner\Cleanup_Core\Disable_Emoji;
 use Art\Cleaner\Cleanup_Core\Disable_Feed;
 use Art\Cleaner\Cleanup_Core\Disable_Xml_Rpc;
+use Art\Cleaner\Cleanup_Plugins\RankMath\Disabled;
+use Art\Cleaner\Cleanup_Plugins\Woocommerce;
 
-//use Art\Cleaner\Woocommerce\Disabled;
-//use Art\Cleaner\Woocommerce\Tools;
 use Exception;
 use WP_CLI;
 
@@ -72,7 +72,6 @@ class Main {
 
 	public function init_all() {
 
-		//$this->init_cli();
 		$this->init_classes();
 		$this->init_condition_classes();
 	}
@@ -102,6 +101,7 @@ class Main {
 			'disable_comments',
 			'autoremove_attachments',
 			'disabled_woocommerce',
+			'disabled_rank_math',
 			'cleanup_head',
 			'cleanup_dashboard',
 			'cleanup_admin_bar',
@@ -130,9 +130,6 @@ class Main {
 				);
 			}
 		} );
-		/*if ( class_exists( 'Woocommerce' ) && ! $this->is_cli() ) {
-
-		}*/
 	}
 
 
@@ -319,4 +316,12 @@ class Main {
 		}
 	}
 
+
+	/**
+	 * @return void
+	 */
+	protected function set_disabled_rank_math(): void {
+
+		( new Disabled() )->init_hooks();
+	}
 }

@@ -38,11 +38,9 @@ class Disabled {
 	/**
 	 * Отключение разделов Аналитика, Маркетинг и страницы Обзор
 	 *
-	 * @param  array $feature_config Array of feature slugs.
-	 *
 	 * @return array
 	 */
-	public function feature_config( array $feature_config ): array {
+	public function feature_config(): array {
 
 		return [
 			'activity-panels'                      => false, // требуется для Site Visibility

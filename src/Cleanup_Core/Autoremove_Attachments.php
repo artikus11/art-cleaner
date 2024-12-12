@@ -6,11 +6,11 @@ class Autoremove_Attachments {
 
 	public function init_hooks(): void {
 
-		add_action( 'before_delete_post', [ $this, 'remove_attachments' ], PHP_INT_MAX, 2 );
+		add_action( 'before_delete_post', [ $this, 'remove_attachments' ], PHP_INT_MAX, 1 );
 	}
 
 
-	public function remove_attachments( $post_id, $post ) {
+	public function remove_attachments( $post_id ) {
 
 		$post_id = (int) $post_id;
 

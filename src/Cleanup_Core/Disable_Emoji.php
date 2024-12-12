@@ -37,7 +37,7 @@ class Disable_Emoji {
 	 *
 	 * @return   array             Difference betwen the two arrays
 	 */
-	function disable_emojis_tinymce( $plugins ) {
+	public function disable_emojis_tinymce( $plugins ) {
 
 		if ( is_array( $plugins ) ) {
 			return array_diff( $plugins, [ 'wpemoji' ] );
@@ -55,14 +55,14 @@ class Disable_Emoji {
 	 *
 	 * @return array                 Difference betwen the two arrays.
 	 */
-	function disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
+	public function disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
 
-		if ( 'dns-prefetch' == $relation_type ) {
+		if ( 'dns-prefetch' === $relation_type ) {
 
 			// Strip out any URLs referencing the WordPress.org emoji location
 			$emoji_svg_url_bit = 'https://s.w.org/images/core/emoji/';
 			foreach ( $urls as $key => $url ) {
-				if ( strpos( $url, $emoji_svg_url_bit ) !== false ) {
+				if ( str_contains( $url, $emoji_svg_url_bit ) ) {
 					unset( $urls[ $key ] );
 				}
 			}

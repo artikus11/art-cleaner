@@ -20,7 +20,7 @@ class Disable_Embeds {
 	}
 
 
-	function disable_embeds() {
+	public function disable_embeds() {
 
 		global $wp;
 
@@ -93,7 +93,6 @@ class Disable_Embeds {
 	 *
 	 * @return array Filtered REST API endpoints.
 	 * @since 1.4.0
-	 *
 	 */
 	public function remove_embed_endpoint( $endpoints ): array {
 
@@ -110,7 +109,6 @@ class Disable_Embeds {
 	 *
 	 * @return array|false Response data or false if in a REST API context.
 	 * @since 1.4.0
-	 *
 	 */
 	public function filter_oembed_response_data( $data ) {
 
@@ -135,7 +133,6 @@ class Disable_Embeds {
 	 *
 	 * @return array Rewrite rules without embeds rules.
 	 * @since 1.2.0
-	 *
 	 */
 	public function disable_embeds_rewrites( $rules ) {
 
@@ -155,7 +152,6 @@ class Disable_Embeds {
 	 * @param  WP_Scripts $scripts WP_Scripts instance, passed by reference.
 	 *
 	 * @since 1.4.0
-	 *
 	 */
 	public function remove_script_dependencies( WP_Scripts $scripts ) {
 

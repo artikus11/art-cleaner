@@ -6,6 +6,7 @@ if ( ! class_exists( 'Woocommerce' ) ) {
 	return;
 }
 
+
 class Dequeue {
 
 	public static function init_hooks(): void {
@@ -207,7 +208,7 @@ class Dequeue {
 
 
 	/**
-	 * @param $post
+	 * @param  \WP_Post $post
 	 *
 	 * @return bool
 	 */
@@ -222,7 +223,7 @@ class Dequeue {
 		$wc_blocks_name = [];
 
 		foreach ( $blocks_name as $block_name ) {
-			if ( false !== strpos( $block_name, 'woocommerce' ) ) {
+			if ( str_contains( $block_name, 'woocommerce' ) ) {
 				$wc_blocks_name[] = $block_name;
 			}
 		}
@@ -232,7 +233,7 @@ class Dequeue {
 
 
 	/**
-	 * @param $post
+	 * @param  \WP_Post $post
 	 *
 	 * @return bool
 	 */
@@ -244,5 +245,4 @@ class Dequeue {
 
 		return has_shortcode( $post->post_content, 'products' );
 	}
-
 }
