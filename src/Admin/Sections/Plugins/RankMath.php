@@ -6,9 +6,6 @@ use Art\Cleaner\Admin\Sections\Plugins;
 
 class RankMath extends Plugins {
 
-	public function __construct( $wposa, $utils ) { parent::__construct( $wposa, $utils ); }
-
-
 	protected function fields(): void {
 
 		if ( ! is_plugin_active( 'seo-by-rank-math/rank-math.php' ) ) {
@@ -24,15 +21,70 @@ class RankMath extends Plugins {
 			]
 		);
 
-	/*	$this->wposa->add_field(
+		$this->wposa->add_field(
 			$this->section_id,
 			[
-				'id'      => 'rank_math_disable_feature',
+				'id'      => 'rank_math_disable_ads',
 				'type'    => 'switch',
-				'name'    => 'Отключить WooCommerce Admin',
+				'name'    => 'Отключить рекламные блоки',
 				'default' => 'off',
-				'desc'    => 'Будут отлючены все новые функции и разделы: Маркетинг, Аналитика, Бординг и тд относящиеся к WooCommerce Admin',
+				'desc'    => 'Отключает рекламу платной версии',
 			]
-		);*/
+		);
+
+		$this->wposa->add_field(
+			$this->section_id,
+			[
+				'id'      => 'rank_math_auto_update_send_email',
+				'type'    => 'switch',
+				'name'    => 'Отключить отправку писем',
+				'default' => 'off',
+				'desc'    => 'Отключает отправку присем при автоматическим обновлении плагина',
+			]
+		);
+
+		$this->wposa->add_field(
+			$this->section_id,
+			[
+				'id'      => 'rank_math_disable_admin_footer_text',
+				'type'    => 'switch',
+				'name'    => 'Отключить сообщение в подвале',
+				'default' => 'off',
+				'desc'    => 'Отключает вывод сообщения о плагине в подвале',
+			]
+		);
+
+		$this->wposa->add_field(
+			$this->section_id,
+			[
+				'id'      => 'rank_math_disable_comments',
+				'type'    => 'switch',
+				'name'    => 'Отключить комментарии на фронте',
+				'default' => 'off',
+				'desc'    => 'Отключение комментариев плагина на фронте',
+			]
+		);
+
+		$this->wposa->add_field(
+			$this->section_id,
+			[
+				'id'      => 'rank_math_disable_columns',
+				'type'    => 'switch',
+				'name'    => 'Отключить колонки',
+				'default' => 'off',
+				'desc'    => 'Отключает колонку SEO детали в литинге записей',
+			]
+		);
+
+		$this->wposa->add_field(
+			$this->section_id,
+			[
+				'id'      => 'rank_math_disable_filter',
+				'type'    => 'switch',
+				'name'    => 'Отключить фильтр',
+				'default' => 'off',
+				'desc'    => 'Отключает в литинге записей фильтр по SEO оценке',
+			]
+		);
 	}
 }
