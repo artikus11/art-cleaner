@@ -67,6 +67,19 @@ class Admin extends Settings {
 			);
 		}
 
+		if ( 'on' !== Options::get( 'disable_comments', 'general' ) ) {
+			$this->wposa->add_field(
+				$this->section_id,
+				[
+					'id'      => 'delete_intermediate_image_sizes',
+					'type'    => 'switch',
+					'name'    => 'Удалить лишние размеры миниатюр',
+					'default' => 'off',
+					'desc'    => 'Удаляет штатные размеры миниатюр: <code>medium_large</code>, <code>1536x1536</code>, <code>2048x2048</code>',
+				]
+			);
+		}
+
 		if ( ! wp_use_widgets_block_editor() ) {
 			$this->wposa->add_field(
 				$this->section_id,
